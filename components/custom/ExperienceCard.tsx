@@ -21,12 +21,12 @@ export const ExperienceCard = ({
             alt={experience.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover"
+            className="object-cover rounded-xl"
             priority={priority}
             unoptimized
           />
         </div>
-        <div className="p-4">
+        <div className="pt-4 px-1">
           <H4 className="truncate font-semibold">{experience.title}</H4>
           <P className="mt-0 pt-0 text-sm text-gray-600">
             {experience.short_description}

@@ -12,6 +12,7 @@ const formSchema = z.object({
   short_description: z.string().min(10, "La descripción corta debe tener al menos 10 caracteres."),
   long_description: z.string().min(20, "La descripción larga debe tener al menos 20 caracteres."),
   what_to_know: z.string(), // Se espera un string JSON
+  featured: z.boolean(),
   images: z.array(z.object({ url: z.string().url("Debe ser una URL válida.") })),
 });
 
@@ -35,7 +36,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
     const body = await request.json();
     const validatedData = formSchema.parse(body);
 
-    const { title, category, short_description, long_description, what_to_know, images } = validatedData;
+    const { title, category, short_description, long_description, what_to_know, featured, images } = validatedData;
 
     // 1. Actualizar la experiencia en Supabase
     const { error: updateError } = await supabase
@@ -46,6 +47,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
         short_description,
         long_description,
         what_to_know,
+        featured,
       })
       .eq('id', id);
 

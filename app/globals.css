@@ -145,6 +145,31 @@
   stroke-width: 60;
 }
 
+/* Category Colors */
+.interactive-polygon.Verde {
+  fill: rgb(168, 207, 69);
+}
+
+.interactive-polygon.Verde.hovered {
+  fill-opacity: 80%;
+}
+
+.interactive-polygon.Celeste {
+  fill: rgb(0, 158, 189);
+}
+
+.interactive-polygon.Celeste.hovered {
+  fill-opacity: 80%;
+}
+
+.interactive-polygon.Azul {
+  fill: rgb(20, 100, 161);
+}
+
+.interactive-polygon.Azul.hovered {
+  fill-opacity: 80%;
+}
+
 .rounded-xl,
 .rounded-md {
   corner-shape: squircle;

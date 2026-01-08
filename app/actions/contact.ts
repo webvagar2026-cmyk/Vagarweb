@@ -28,7 +28,7 @@ export async function sendContactEmail(formData: FormData) {
         }
 
         return { success: true };
-    } catch (error) {
+    } catch {
         return { error: 'Hubo un error al enviar el mensaje.' };
     }
 }

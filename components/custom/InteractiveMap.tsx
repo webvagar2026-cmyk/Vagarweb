@@ -92,6 +92,11 @@ const InteractiveMap = ({ properties, selectedNodeId }: InteractiveMapProps) => 
             const { class: originalClassName, ...restPolygonAttribs } = polygon.attribs;
 
             let dynamicClasses = 'interactive-polygon';
+            // Add category class if available
+            if (property.category) {
+              dynamicClasses += ` ${property.category}`;
+            }
+
             if (hoveredPropertyId === property.id) {
               dynamicClasses += ' hovered';
             }
@@ -103,7 +108,10 @@ const InteractiveMap = ({ properties, selectedNodeId }: InteractiveMapProps) => 
               <g
                 {...domNode.attribs}
                 onClick={(e) => handlePropertyClick(e, property)}
-                onMouseEnter={() => setHoveredPropertyId(property.id)}
+                onMouseEnter={() => {
+                  setHoveredPropertyId(property.id);
+                  setSelectedProperty(property);
+                }}
                 onMouseLeave={() => setHoveredPropertyId(null)}
               >
                 <polygon {...restPolygonAttribs} className={`${originalClassName || ''} ${dynamicClasses}`.trim()} />

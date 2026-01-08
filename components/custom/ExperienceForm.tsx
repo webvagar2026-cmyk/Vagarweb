@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -23,6 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { ImageUpload } from "@/components/custom/ImageUpload";
@@ -35,6 +37,7 @@ const formSchema = z.object({
   short_description: z.string().min(10, "La descripción corta debe tener al menos 10 caracteres."),
   long_description: z.string().min(20, "La descripción larga debe tener al menos 20 caracteres."),
   what_to_know: z.string().optional(),
+  featured: z.boolean(),
   images: z.array(z.object({ url: z.string().url("Debe ser una URL válida.") })),
 });
 
@@ -58,6 +61,7 @@ export function ExperienceForm({ defaultValues }: ExperienceFormProps) {
       short_description: "",
       long_description: "",
       what_to_know: "",
+      featured: false,
       images: [],
     },
   });
@@ -154,6 +158,28 @@ export function ExperienceForm({ defaultValues }: ExperienceFormProps) {
                 </SelectContent>
               </Select>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="featured"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+              <div className="space-y-1 leading-none">
+                <FormLabel>
+                  Destacada
+                </FormLabel>
+                <FormDescription>
+                  Esta experiencia aparecerá en el carrusel de la página de inicio.
+                </FormDescription>
+              </div>
             </FormItem>
           )}
         />

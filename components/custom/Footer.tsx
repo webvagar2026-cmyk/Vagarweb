@@ -72,6 +72,11 @@ const Footer = () => {
                   Experiencias
                 </Link>
               </li>
+              <li>
+                <Link href="/faq" className="hover:text-primary transition-colors">
+                  FAQ
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -93,7 +98,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center justify-center md:justify-start gap-2">
                 <Phone className="h-4 w-4 shrink-0" />
-                <a href="tel:02656476500" className="hover:text-primary transition-colors">
+                <a className="hover:text-primary transition-colors">
                   02656 - 476500
                 </a>
               </li>

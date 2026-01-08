@@ -15,6 +15,13 @@ if (!supabaseServiceKey) {
 }
 
 // Crear y exportar el cliente de Supabase para el lado del servidor
-const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+  auth: {
+    persistSession: false,
+    autoRefreshToken: false,
+    detectSessionInUrl: false,
+  }
+});
 
 export default supabase;

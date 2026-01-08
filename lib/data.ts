@@ -1,4 +1,4 @@
-import { Property, DashboardMetrics, LatestBooking, Booking, Experience, Testimonial } from '@/lib/types';
+import { Property, DashboardMetrics, LatestBooking, Booking, Experience, Testimonial, Faq } from '@/lib/types';
 import supabase from './db';
 
 // Tipos intermedios para manejar la respuesta de Supabase con relaciones anidadas
@@ -434,7 +434,7 @@ export const updateAvailabilityFromExcel = async (
     console.error('Failed to update availability from Excel:', error);
     throw new Error('Error al actualizar la base de datos.');
   }
-  console.log('Availability updated successfully.');
+
 };
 
 /**
@@ -671,7 +671,7 @@ export const fetchAllExperiences = async (): Promise<Experience[] | null> => {
     const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000';
     const url = `${baseUrl}/api/experiencias`;
 
-    console.log(`Fetching experiences from URL: ${url}`);
+
 
     const headers: HeadersInit = {
       'Cache-Control': 'no-store',
@@ -679,7 +679,7 @@ export const fetchAllExperiences = async (): Promise<Experience[] | null> => {
 
     const bypassToken = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
     if (bypassToken) {
-      console.log('Vercel bypass token found. Adding Authorization header.');
+
       headers['Authorization'] = `Bearer ${bypassToken}`;
     } else {
       console.warn('Vercel bypass token is not set. Fetching without Authorization.');
@@ -696,7 +696,7 @@ export const fetchAllExperiences = async (): Promise<Experience[] | null> => {
       return null;
     }
 
-    console.log('Successfully fetched experiences.');
+
     return res.json();
   } catch (error) {
     console.error('An unexpected error occurred while fetching experiences:', error);
@@ -819,6 +819,74 @@ export const fetchExperienceBySlug = async (slug: string): Promise<Experience | 
     ...experience,
     gallery_images: images || [],
   } as Experience;
+};
+
+/**
+ * Fetches all FAQs from the database.
+ */
+export const fetchFaqs = async (): Promise<Faq[]> => {
+  const { data, error } = await supabase
+    .from('faqs')
+    .select('*')
+    .order('order', { ascending: true })
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Failed to fetch FAQs:', error);
+    return [];
+  }
+  return data as Faq[];
+};
+
+/**
+ * Creates a new FAQ.
+ */
+export const createFaq = async (faq: Omit<Faq, 'id' | 'created_at'>): Promise<Faq | null> => {
+  const { data, error } = await supabase
+    .from('faqs')
+    .insert([faq])
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Failed to create FAQ:', error);
+    return null;
+  }
+  return data as Faq;
+};
+
+/**
+ * Updates an existing FAQ.
+ */
+export const updateFaq = async (id: number, updates: Partial<Faq>): Promise<Faq | null> => {
+  const { data, error } = await supabase
+    .from('faqs')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error(`Failed to update FAQ ${id}:`, error);
+    return null;
+  }
+  return data as Faq;
+};
+
+/**
+ * Deletes an FAQ.
+ */
+export const deleteFaq = async (id: number): Promise<boolean> => {
+  const { error } = await supabase
+    .from('faqs')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error(`Failed to delete FAQ ${id}:`, error);
+    return false;
+  }
+  return true;
 };
 
 /**

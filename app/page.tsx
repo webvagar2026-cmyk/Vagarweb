@@ -1,5 +1,6 @@
 import HeroSection from "../components/custom/HeroSection";
 import { FeaturedProperties } from "../components/custom/FeaturedProperties";
+
 import { fetchFeaturedPropertiesByCategory, fetchFeaturedExperiences, fetchFeaturedTestimonials } from "@/lib/data";
 
 import { FeaturedExperiences } from "@/components/custom/FeaturedExperiences";
@@ -33,41 +34,44 @@ export default async function Home() {
 
       {/* Section for 'Azul' category */}
       {featuredAzul.length > 0 && (
-        <div className="pt-24 pb-12 bg-gray-50">
-          <FeaturedProperties title="Chalets Azules" properties={featuredAzul} />
+        <div className="pt-24 pb-12">
+          <FeaturedProperties title="Chalets Azules" properties={featuredAzul} category="Azul" />
         </div>
       )}
 
       {/* Section for 'Celeste' category */}
       {featuredCeleste.length > 0 && (
         <div className="py-12">
-          <FeaturedProperties title="Chalets Celestes" properties={featuredCeleste} />
+          <FeaturedProperties title="Chalets Celestes" properties={featuredCeleste} category="Celeste" />
         </div>
       )}
 
       {/* Section for 'Verde' category */}
       {featuredVerde.length > 0 && (
         <div className="pt-12 pb-24">
-          <FeaturedProperties title="Chalets Verdes" properties={featuredVerde} />
-        </div>
-      )}
-
-      {/* Section for Featured Experiences */}
-      {featuredExperiences.length > 0 && (
-        <div className="py-12 bg-gray-50">
-          <FeaturedExperiences title="Experiencias Destacadas" experiences={featuredExperiences} />
+          <FeaturedProperties title="Chalets Verdes" properties={featuredVerde} category="Verde" />
         </div>
       )}
 
       {/* About Section */}
       <HomeAboutSection />
 
+
+      {/* Section for Featured Experiences */}
+      {featuredExperiences.length > 0 && (
+        <div className="pt-12 pb-0">
+          <FeaturedExperiences title="Experiencias Destacadas" experiences={featuredExperiences} />
+        </div>
+      )}
+
       {/* Section for Featured Testimonials */}
       {featuredTestimonials.length > 0 && (
-        <div className="pt-24 pb-34">
+        <div className="pt-14 pb-34">
           <FeaturedTestimonials testimonials={featuredTestimonials} />
         </div>
       )}
+
+
     </main>
   );
 }

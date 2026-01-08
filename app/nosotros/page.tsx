@@ -13,22 +13,49 @@ import { motion } from "framer-motion";
 
 export default function NosotrosPage() {
   const images = [
-    "/nosotros/Galeria_1/creando_recuerdos_01.webp",
-    "/nosotros/Galeria_1/creando_recuerdos_02.webp",
-    "/nosotros/Galeria_1/creando_recuerdos_03.webp",
+    {
+      src: "/nosotros/Galeria_1/creando_recuerdos_01.webp",
+      text: "La Familia Barrera, fundadora del country. Sentados: Celina y Roberto; sentada más arriba: Gloria; parados de derecha a izquierda: Guillermo, Ricardo, Federico y Gabriel. Año 1993."
+    },
+    {
+      src: "/nosotros/Galeria_1/creando_recuerdos_02.webp",
+      text: "Celina, Roberto y Gloria, en el arroyo El Tigre. Año 1980."
+    },
+    {
+      src: "/nosotros/Galeria_1/creando_recuerdos_03.webp",
+      text: "Celina, en la parte alta de la actual Zona Urbanizada"
+    },
   ];
 
   const imagesExperience = [
-    "/nosotros/Galeria_2/Nosotros_experiencia_01.webp",
-    "/nosotros/Galeria_2/Nosotros_experiencia_02.webp",
-    "/nosotros/Galeria_2/Nosotros_experiencia_03.webp",
+    { src: "/nosotros/Galeria_2/Nosotros_experiencia_01.webp" },
+    {
+      src: "/nosotros/Galeria_2/Nosotros_experiencia_02.webp",
+      text: "Gabriel Barrera"
+    },
+    {
+      src: "/nosotros/Galeria_2/Nosotros_experiencia_03.webp",
+      text: "Equipo VAGAR"
+    },
   ];
 
   const imagesChumamaya = [
-    "/nosotros/Galeria_3/Chumamaya_01.webp",
-    "/nosotros/Galeria_3/Chumamaya_02.webp",
-    "/nosotros/Galeria_3/Chumamaya_03.webp",
-    "/nosotros/Galeria_3/Chumamaya_04.webp",
+    {
+      src: "/nosotros/Galeria_3/Chumamaya_01.webp",
+      text: "Vista desde el Cerro Chumamaya, debajo, los inicios de las obras en lo que hoy es la Zona Urbanizada. Año 1980."
+    },
+    {
+      src: "/nosotros/Galeria_3/Chumamaya_02.webp",
+      text: "Vista desde el Cerro Chumamaya a la Zona Urbanizada. Año 2025."
+    },
+    {
+      src: "/nosotros/Galeria_3/Chumamaya_03.webp",
+      text: "Vista aérea de la parte baja del barrio. Año 1987."
+    },
+    {
+      src: "/nosotros/Galeria_3/Chumamaya_04.webp",
+      text: "Vista aérea de la parte baja del barrio. Año 2025."
+    },
   ];
 
   // Animation Variants
@@ -126,15 +153,20 @@ export default function NosotrosPage() {
           >
             <Carousel className="w-full max-w-xl">
               <CarouselContent>
-                {images.map((src, index) => (
+                {images.map((item, index) => (
                   <CarouselItem key={index}>
                     <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl">
                       <Image
-                        src={src}
+                        src={item.src}
                         alt={`Galería nosotros imagen ${index + 1}`}
                         fill
                         className="object-cover"
                       />
+                      {item.text && (
+                        <div className="absolute inset-x-0 bottom-0 bg-black/60 p-4 text-white backdrop-blur-sm pt-5">
+                          <p className="text-sm md:text-xs lg:text-sm font-medium max-w-[80%] pb-1">{item.text}</p>
+                        </div>
+                      )}
                     </div>
                   </CarouselItem>
                 ))}
@@ -158,15 +190,20 @@ export default function NosotrosPage() {
           >
             <Carousel className="w-full max-w-xl">
               <CarouselContent>
-                {imagesExperience.map((src, index) => (
+                {imagesExperience.map((item, index) => (
                   <CarouselItem key={index}>
                     <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl">
                       <Image
-                        src={src}
+                        src={item.src}
                         alt={`Galería experiencia imagen ${index + 1}`}
                         fill
                         className="object-cover"
                       />
+                      {item.text && (
+                        <div className="absolute inset-x-0 bottom-0 bg-black/60 p-4 text-white backdrop-blur-sm pt-5">
+                          <p className="text-sm md:text-xs lg:text-sm font-medium max-w-[80%] pb-1">{item.text}</p>
+                        </div>
+                      )}
                     </div>
                   </CarouselItem>
                 ))}
@@ -232,15 +269,20 @@ export default function NosotrosPage() {
           >
             <Carousel className="w-full max-w-xl">
               <CarouselContent>
-                {imagesChumamaya.map((src, index) => (
+                {imagesChumamaya.map((item, index) => (
                   <CarouselItem key={index}>
                     <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl">
                       <Image
-                        src={src}
+                        src={item.src}
                         alt={`Galería Chumamaya imagen ${index + 1}`}
                         fill
                         className="object-cover"
                       />
+                      {item.text && (
+                        <div className="absolute inset-x-0 bottom-0 bg-black/60 p-4 text-white backdrop-blur-sm pt-5">
+                          <p className="text-sm md:text-xs lg:text-sm font-medium max-w-[80%] pb-1">{item.text}</p>
+                        </div>
+                      )}
                     </div>
                   </CarouselItem>
                 ))}

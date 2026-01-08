@@ -19,12 +19,6 @@ export function AvailabilityCalendar({ bookings, className }: AvailabilityCalend
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  // Log para depuración de fechas en el frontend
-  React.useEffect(() => {
-    bookings.forEach(booking => {
-      console.log(`[FRONTEND] Booking recibido: check_in_date=${booking.check_in_date}, check_out_date=${booking.check_out_date}`);
-    });
-  }, [bookings]);
 
   // Calcular los días "ocupados" (booked) que son relevantes para el usuario (hoy o futuro).
   // Filtramos reservas pasadas y recortamos las que empezaron antes de hoy.

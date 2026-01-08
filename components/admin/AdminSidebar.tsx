@@ -45,6 +45,7 @@ export function AdminSidebar({ initialCollapsed }: AdminSidebarProps) {
         { href: "/admin/chalets/new", label: "Cargar Chalet", icon: PlusCircle },
         { href: "/admin/experiencias", label: "Experiencias", icon: Star },
         { href: "/admin/amenities", label: "Amenities", icon: List },
+        { href: "/admin/faq", label: "Preguntas Frecuentes", icon: MessageSquare }, // Reusing MessageSquare or generic icon
         { href: "/admin/galeria", label: "Galería", icon: Image, hidden: true },
         { href: "/admin/testimonials", label: "Testimonios", icon: MessageSquare },
     ];

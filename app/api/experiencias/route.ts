@@ -11,6 +11,7 @@ const experienceSchema = z.object({
   short_description: z.string(),
   long_description: z.string(),
   what_to_know: z.string(), // Se espera un string JSON
+  featured: z.boolean(),
   images: z.array(z.object({ url: z.string() })), // Se espera un array de objetos de imagen
 });
 
@@ -26,6 +27,7 @@ export async function POST(request: Request) {
       short_description,
       long_description,
       what_to_know,
+      featured,
       images,
     } = parsedData;
 
@@ -42,6 +44,7 @@ export async function POST(request: Request) {
         short_description,
         long_description,
         what_to_know: whatToKnowJson,
+        featured,
       })
       .select('id')
       .single();
@@ -88,11 +91,10 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-  console.log('API route /api/experiencias received a GET request.');
+
   try {
     const experiences: Experience[] = await fetchExperiences();
-    // Log para depuración en Vercel
-    console.log('Successfully fetched experiences:', JSON.stringify(experiences, null, 2));
+
     return NextResponse.json(experiences);
   } catch (error) {
     // Log del error específico

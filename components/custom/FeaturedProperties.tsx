@@ -8,13 +8,16 @@ import {
 import { PropertyCard } from "./PropertyCard";
 import { type Property } from "@/lib/types";
 import { H2 } from "@/components/ui/typography";
+import { Star } from "lucide-react";
+import { getCategoryColor } from "@/lib/utils";
 
 interface FeaturedPropertiesProps {
   title?: string;
   properties: Property[];
+  category?: string;
 }
 
-export function FeaturedProperties({ title, properties }: FeaturedPropertiesProps) {
+export function FeaturedProperties({ title, properties, category }: FeaturedPropertiesProps) {
   if (!properties || properties.length === 0) {
     return null; // No renderizar nada si no hay propiedades
   }
@@ -29,7 +32,10 @@ export function FeaturedProperties({ title, properties }: FeaturedPropertiesProp
         className="w-full"
       >
         <div className="flex items-center justify-between mb-6">
-          {title && <H2 className="text-2xl font-bold">{title}</H2>}
+          <div className="flex items-center gap-2">
+            {title && <H2 className="text-2xl font-bold">{title}</H2>}
+            {category && <Star className={`w-6 h-6 mb-2.5 ${getCategoryColor(category)}`} />}
+          </div>
           <div className="flex items-center gap-2">
             <CarouselPrevious className="static translate-y-0" />
             <CarouselNext className="static translate-y-0" />

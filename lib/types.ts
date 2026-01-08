@@ -106,3 +106,11 @@ export interface User {
   role: 'admin';
   created_at: Date;
 }
+
+export type Faq = {
+  id: number;
+  question: string;
+  answer: string;
+  order: number;
+  created_at: string;
+};
