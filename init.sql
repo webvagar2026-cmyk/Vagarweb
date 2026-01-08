@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS experiences CASCADE;
 DROP TABLE IF EXISTS properties CASCADE;
 DROP TABLE IF EXISTS amenities CASCADE;
+DROP TABLE IF EXISTS faqs CASCADE;
 
 -- Crear tipos ENUM personalizados para PostgreSQL
 DO $$
@@ -125,6 +126,15 @@ CREATE TABLE testimonials (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Crear la tabla faqs
+CREATE TABLE faqs (
+    id SERIAL PRIMARY KEY,
+    question TEXT NOT NULL,
+    answer TEXT NOT NULL,
+    "order" INT DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Crear la tabla users para administradores
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -144,6 +154,7 @@ GRANT ALL ON TABLE propertyamenities TO service_role;
 GRANT ALL ON TABLE propertyrules TO service_role;
 GRANT ALL ON TABLE bookings TO service_role;
 GRANT ALL ON TABLE testimonials TO service_role;
+GRANT ALL ON TABLE faqs TO service_role;
 GRANT ALL ON TABLE users TO service_role;
 
 -- Grant permissions on sequences for auto-incrementing IDs

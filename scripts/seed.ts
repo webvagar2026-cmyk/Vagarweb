@@ -29,11 +29,14 @@ async function main() {
 
   if (!existingUser) {
     console.log('Inserting admin user...');
-    const adminPasswordHash = '$2b$10$7fxnolE0gTw88FmTUpXHNO30nINqKOvdmsF21MHcOvwIse6XFrt46'; // Same as before
+    const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
+    if (!adminPasswordHash) {
+      throw new Error('ADMIN_PASSWORD_HASH must be defined in environment variables.');
+    }
     const { error: insertUserError } = await supabase.from('users').insert({
       id: 1, // Asignar ID manualmente para evitar problemas de secuencia
       name: 'Admin',
-      email: 'admin@vagar.com',
+      email: 'admin@vagar.com.ar',
       password: adminPasswordHash,
       role: 'admin'
     });
