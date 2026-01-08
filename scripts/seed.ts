@@ -7,11 +7,12 @@ import * as path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
 
 // Manually configure Supabase client for the script
-const supabaseUrl = process.env.SUPABASE_URL;
+// Manually configure Supabase client for the script
+const supabaseUrl = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseServiceKey) {
-  throw new Error('Supabase URL and service role key must be defined in environment variables.');
+  throw new Error('Supabase URL (SUPABASE_URL or NEXT_PUBLIC_SUPABASE_URL) and service role key (SUPABASE_SERVICE_ROLE_KEY) must be defined in environment variables.');
 }
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -21,7 +22,7 @@ async function main() {
 
   // 1. Insert Admin User
   console.log('Checking admin user...');
-  const { data: existingUser, error: userError } = await supabase.from('users').select('id').eq('email', 'admin@vagar.com').single();
+  const { data: existingUser, error: userError } = await supabase.from('users').select('id').eq('email', 'admin@vagar.com.ar').single();
 
   if (userError && userError.code !== 'PGRST116') { // PGRST116 is "The result contains 0 rows"
     console.error('Error checking admin user:', userError);
@@ -54,13 +55,29 @@ async function main() {
   const amenitiesToInsert = amenities.map(a => ({ slug: a.id, name: a.name, category: a.category, icon: a.icon }));
 
   // Use upsert to avoid errors if they already exist, and update them if they changed
-  const { data: insertedAmenities, error: amenitiesError } = await supabase
-    .from('amenities')
-    .upsert(amenitiesToInsert, { onConflict: 'slug' })
-    .select();
+  // Add retry logic for amenities upsert to handle potential connection timeouts
+  let amenitiesError;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    try {
+      const { error } = await supabase
+        .from('amenities')
+        .upsert(amenitiesToInsert, { onConflict: 'slug' })
+        .select();
+
+      amenitiesError = error;
+      if (!amenitiesError) break; // Success
+
+      console.warn(`Attempt ${attempt} failed to upsert amenities. Retrying...`);
+    } catch (err) {
+      console.warn(`Attempt ${attempt} threw an error during amenities upsert:`, err);
+      if (attempt === 3) throw err;
+    }
+    // Small delay before retry
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
 
   if (amenitiesError) {
-    console.error('Error upserting amenities:', amenitiesError);
+    console.error('Error upserting amenities after retries:', amenitiesError);
     return;
   }
   console.log('Amenities upserted.');

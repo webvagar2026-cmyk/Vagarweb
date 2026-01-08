@@ -84,7 +84,7 @@ export default function AmenitiesList({ initialAmenities }: AmenitiesListProps) 
                                 <TooltipProvider>
                                     <Tooltip>
                                         <TooltipTrigger asChild>
-                                            <span className="cursor-help underline decoration-dotted">
+                                            <span>
                                                 {amenity.name}
                                             </span>
                                         </TooltipTrigger>
