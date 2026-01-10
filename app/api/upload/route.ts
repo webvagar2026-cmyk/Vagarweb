@@ -10,7 +10,15 @@ export async function POST(request: Request): Promise<NextResponse> {
   }
 
   try {
-    const blob = await put(filename, request.body, {
+    // Read the body into a blob to avoid "body used" or locking issues
+    const file = await request.blob();
+    console.log(`Uploading file: ${filename}, size: ${file.size} bytes`);
+
+    if (file.size === 0) {
+      return NextResponse.json({ message: 'File is empty (0 bytes)' }, { status: 400 });
+    }
+
+    const blob = await put(filename, file, {
       access: 'public',
       addRandomSuffix: true,
     });

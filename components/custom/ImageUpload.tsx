@@ -167,7 +167,16 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
               alt="Vista previa de la imagen"
               width={150}
               height={150}
-              className="rounded-lg object-cover w-full h-full pointer-events-none" // pointer-events-none prevents image dragging interfering with div dragging
+              className="rounded-lg object-cover w-full h-full pointer-events-none"
+              onError={(e) => {
+                // Si falla la carga optimizada, ocultar o mostrar placeholder
+                console.error("Error loading image:", url);
+                const target = e.target as HTMLImageElement;
+                // Fallback to simple img tag behavior if Next.js Image fails (though specialized handling is better)
+                // Or better, set a fallback image
+                target.src = "/placeholder.svg"; // Asegurate de tener un placeholder o similar
+                target.style.objectFit = "contain";
+              }}
             />
             <div className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity flex gap-1">
               <Button

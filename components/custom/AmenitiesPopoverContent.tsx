@@ -44,7 +44,7 @@ const AmenityButton = ({ text, Icon, isSelected, onClick, description }: Amenity
             {button}
           </TooltipTrigger>
           <TooltipContent side="bottom" align="start">
-            <p className="max-w-xs">{description}</p>
+            <p className="max-w-[200px]">{description}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
