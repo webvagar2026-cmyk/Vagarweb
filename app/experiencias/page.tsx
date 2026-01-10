@@ -8,11 +8,11 @@ export default async function ExperienciasPage() {
   const experiences = await fetchExperiences();
 
   const zonaDeportiva = experiences.filter(
-    (exp) => exp.category === 'Zona deportiva y social'
+    (exp) => exp.category === 'Zona deportiva'
   );
-  const turismo = experiences.filter((exp) => exp.category === 'Turismo');
-  const zonaNaturaleza = experiences.filter(
-    (exp) => exp.category === 'Zona de naturaleza'
+  const residencial = experiences.filter((exp) => exp.category === 'Zona residencial');
+  const zonaMontana = experiences.filter(
+    (exp) => exp.category === 'Zona de montaña'
   );
 
   return (
@@ -25,14 +25,14 @@ export default async function ExperienciasPage() {
       />
       <div className="container mx-auto px-4 py-12">
         <FeaturedExperiences
-          title="Zona deportiva y social"
+          title="Zona deportiva"
           experiences={zonaDeportiva}
           priority
         />
-        <FeaturedExperiences title="Turismo" experiences={turismo} />
+        <FeaturedExperiences title="Zona residencial" experiences={residencial} />
         <FeaturedExperiences
-          title="Zona de naturaleza"
-          experiences={zonaNaturaleza}
+          title="Zona de montaña"
+          experiences={zonaMontana}
         />
       </div>
     </main>

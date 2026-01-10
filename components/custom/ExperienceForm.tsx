@@ -152,9 +152,9 @@ export function ExperienceForm({ defaultValues }: ExperienceFormProps) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="Zona deportiva y social">Zona deportiva y social</SelectItem>
-                  <SelectItem value="Turismo">Turismo</SelectItem>
-                  <SelectItem value="Zona de naturaleza">Zona de naturaleza</SelectItem>
+                  <SelectItem value="Zona deportiva">Zona deportiva</SelectItem>
+                  <SelectItem value="Zona residencial">Zona residencial</SelectItem>
+                  <SelectItem value="Zona de montaña">Zona de montaña</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
