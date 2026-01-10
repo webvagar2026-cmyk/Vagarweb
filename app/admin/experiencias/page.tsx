@@ -1,12 +1,17 @@
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import ExperiencesTable from '@/components/custom/ExperiencesTable';
-import { fetchAllExperiences } from '@/lib/data';
+import { fetchExperiences } from '@/lib/data';
 
 export const dynamic = 'force-dynamic';
 
 export default async function ExperiencesPage() {
-  const experiences = await fetchAllExperiences();
+  let experiences = null;
+  try {
+    experiences = await fetchExperiences();
+  } catch (error) {
+    console.error('Error fetching experiences:', error);
+  }
 
   if (!experiences) {
     return (
