@@ -79,7 +79,8 @@ CREATE TABLE amenities (
     slug VARCHAR(255) NOT NULL UNIQUE,
     name VARCHAR(255) NOT NULL UNIQUE,
     category VARCHAR(100),
-    icon VARCHAR(100)
+    icon VARCHAR(100),
+    description TEXT
 );
 
 -- Crear la tabla intermedia propertyamenities

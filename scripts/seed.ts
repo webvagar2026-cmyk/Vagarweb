@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { allAmenities as amenities } from '../lib/amenities-data';
+import { allAmenities as amenities, iconMap } from '../lib/amenities-data';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 
@@ -16,6 +16,12 @@ if (!supabaseUrl || !supabaseServiceKey) {
 }
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+// Create a reverse mapping from Icon Component to Icon Name
+const iconComponentToName = new Map<any, string>();
+Object.entries(iconMap).forEach(([name, component]) => {
+  iconComponentToName.set(component, name);
+});
 
 async function main() {
   console.log('Starting database seeding...');
@@ -52,7 +58,16 @@ async function main() {
 
   // 2. Insert/Update Amenities
   console.log('Upserting amenities...');
-  const amenitiesToInsert = amenities.map(a => ({ slug: a.id, name: a.name, category: a.category, icon: a.icon }));
+  const amenitiesToInsert = amenities.map(a => {
+    // Find the string name for the icon component
+    const iconName = iconComponentToName.get(a.icon) || 'Home';
+    return {
+      slug: a.id,
+      name: a.name,
+      category: a.category,
+      icon: iconName
+    };
+  });
 
   // Use upsert to avoid errors if they already exist, and update them if they changed
   // Add retry logic for amenities upsert to handle potential connection timeouts

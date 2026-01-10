@@ -277,7 +277,7 @@ const SearchBar = ({ onSearch, initialFilters }: SearchBarProps) => {
                 <p className="text-xs pt-0.5 text-gray-500">{amenitiesText}</p>
               </button>
             </PopoverTrigger>
-            <PopoverContent className="w-auto mt-2 p-0" align="start">
+            <PopoverContent className="w-auto mt-2 p-0" align="start" onOpenAutoFocus={(e) => e.preventDefault()}>
               <AmenitiesPopoverContent
                 selectedAmenities={selectedAmenities}
                 onAmenityToggle={handleAmenityToggle}
