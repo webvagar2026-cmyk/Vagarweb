@@ -30,6 +30,47 @@ export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
     );
   }, [images.length]);
 
+  const handleImageClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    const img = e.currentTarget;
+    const { naturalWidth, naturalHeight, clientWidth, clientHeight } = img;
+
+    if (!naturalWidth || !naturalHeight) return;
+
+    const style = window.getComputedStyle(img);
+    const pLeft = parseFloat(style.paddingLeft) || 0;
+    const pTop = parseFloat(style.paddingTop) || 0;
+    const pX = pLeft + (parseFloat(style.paddingRight) || 0);
+    const pY = pTop + (parseFloat(style.paddingBottom) || 0);
+
+    const width = clientWidth - pX;
+    const height = clientHeight - pY;
+    const imageAspect = naturalWidth / naturalHeight;
+    const areaAspect = width / height;
+
+    let renderWidth, renderHeight;
+
+    if (imageAspect > areaAspect) {
+      renderWidth = width;
+      renderHeight = width / imageAspect;
+    } else {
+      renderHeight = height;
+      renderWidth = height * imageAspect;
+    }
+
+    const rect = img.getBoundingClientRect();
+    const x = e.clientX - rect.left - pLeft;
+    const y = e.clientY - rect.top - pTop;
+
+    const xStart = (width - renderWidth) / 2;
+    const xEnd = xStart + renderWidth;
+    const yStart = (height - renderHeight) / 2;
+    const yEnd = yStart + renderHeight;
+
+    if (x < xStart || x > xEnd || y < yStart || y > yEnd) {
+      onClose();
+    }
+  };
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") {
@@ -80,6 +121,7 @@ export function Lightbox({ images, initialIndex, onClose }: LightboxProps) {
           layout="fill"
           objectFit="contain"
           className="p-4 pointer-events-auto"
+          onClick={handleImageClick}
         />
       </div>
 

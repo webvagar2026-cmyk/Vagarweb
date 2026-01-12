@@ -76,7 +76,7 @@ const P = React.forwardRef<
   return (
     <p
       ref={ref}
-      className={cn("leading-7 text-sm [&:not(:first-child)]:mt-4", className)}
+      className={cn("leading-7 text-sm [&:not(:first-child)]:mt-2", className)}
       {...props}
     />
   );

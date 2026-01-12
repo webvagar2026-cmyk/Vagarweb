@@ -9,6 +9,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog-custom';
 
+import { Skeleton } from '@/components/ui/skeleton';
 import { Lightbox } from '@/components/custom/Lightbox';
 import { Camera, Layout } from 'lucide-react';
 import { Image as ImageType } from '@/lib/types';
@@ -29,6 +30,11 @@ export const ImageGallery = ({
   const [isGalleryLightboxOpen, setIsGalleryLightboxOpen] = useState(false);
   const [isBlueprintLightboxOpen, setIsBlueprintLightboxOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [loadedImages, setLoadedImages] = useState<Record<number, boolean>>({});
+
+  const handleImageLoad = (index: number) => {
+    setLoadedImages(prev => ({ ...prev, [index]: true }));
+  };
 
   const galleryImageUrls = galleryImages.map(img => img.url);
   const blueprintImageUrls = blueprintImages.map(img => img.url);
@@ -80,11 +86,13 @@ export const ImageGallery = ({
               className="relative h-full min-h-[200px] w-full overflow-hidden rounded-lg md:min-h-[412px]"
               onClick={() => openGalleryLightbox(0)}
             >
+              {!loadedImages[0] && <Skeleton className="absolute inset-0 h-full w-full" />}
               <Image
                 src={galleryImageUrls[0]}
                 alt="Main gallery image"
                 fill
-                className="object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+                className={`object-cover transition-transform duration-300 ease-in-out hover:scale-105 ${!loadedImages[0] ? 'opacity-0' : 'opacity-100'}`}
+                onLoad={() => handleImageLoad(0)}
               />
             </div>
           </div>
@@ -95,11 +103,13 @@ export const ImageGallery = ({
                 className="relative hidden h-full min-h-[200px] w-full cursor-pointer overflow-hidden rounded-lg md:block"
                 onClick={() => openGalleryLightbox(index + 1)}
               >
+                {!loadedImages[index + 1] && <Skeleton className="absolute inset-0 h-full w-full" />}
                 <Image
                   src={imageUrl}
                   alt={`Gallery image ${index + 2}`}
                   fill
-                  className="object-cover transition-transform duration-300 ease-in-out hover:scale-105"
+                  className={`object-cover transition-transform duration-300 ease-in-out hover:scale-105 ${!loadedImages[index + 1] ? 'opacity-0' : 'opacity-100'}`}
+                  onLoad={() => handleImageLoad(index + 1)}
                 />
               </div>
             ))}

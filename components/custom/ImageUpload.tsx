@@ -167,6 +167,7 @@ export function ImageUpload({ value, onChange }: ImageUploadProps) {
               alt="Vista previa de la imagen"
               width={150}
               height={150}
+              unoptimized
               className="rounded-lg object-cover w-full h-full pointer-events-none"
               onError={(e) => {
                 // Si falla la carga optimizada, ocultar o mostrar placeholder

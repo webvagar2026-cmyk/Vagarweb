@@ -35,7 +35,7 @@ export function FeaturedExperiences({
   }, []);
 
   return (
-    <section className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+    <section className="w-full mx-auto px-4 sm:px-6 lg:px-[15%] py-12 md:py-16">
       <Carousel
         opts={{
           align: "start",
@@ -52,7 +52,7 @@ export function FeaturedExperiences({
             <CarouselNext className="static translate-y-0" />
           </div>
         </div>
-        <CarouselContent className="ml-4 ">
+        <CarouselContent className="-ml-4">
           {isLoading
             ? Array.from({ length: 3 }).map((_, index) => (
               <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
@@ -62,7 +62,7 @@ export function FeaturedExperiences({
             : experiences.map((experience, index) => (
               <CarouselItem
                 key={experience.id}
-                className="pl-4 basis-1/2 md:basis-1/3 lg:basis-1/4"
+                className="pl-4 basis-1/2 md:basis-1/3 lg:basis-1/3"
               >
                 <ExperienceCard
                   experience={experience}
