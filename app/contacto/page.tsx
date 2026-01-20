@@ -42,8 +42,8 @@ export default function ContactPage() {
         {/* Columna Izquierda: Información de Contacto */}
         <div className="space-y-8">
           <div>
-            <H1>Siempre listos para ayudarte a planificar tu próxima estadía</H1>
-            <P className="text-muted-foreground mt-4">
+            <H1 className="font-semibold mt-8">Siempre listos para ayudarte a planificar tu próxima estadía</H1>
+            <P className="text-muted-foreground py-6 text-md">
               Completá el formulario y nos pondremos en contacto a la brevedad. Queremos que tu próxima estadía en las sierras de Merlo, San Luis, sea tan perfecta como la imaginás.
             </P>
           </div>
@@ -122,7 +122,7 @@ export default function ContactPage() {
                   <Input name="name" placeholder="Nombre completo" required />
                   <Input name="email" type="email" placeholder="Correo electrónico" required />
                   <Input name="subject" placeholder="Asunto" required />
-                  <Textarea name="message" placeholder="Mensaje" rows={5} required />
+                  <Textarea name="message" placeholder="Mensaje" className="bg-white" rows={5} required />
                   <Button type="submit" className="mt-10 flex mx-auto w-full max-w-md" disabled={isPending}>
                     {isPending ? (
                       <>

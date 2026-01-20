@@ -33,7 +33,7 @@ export function FeaturedProperties({ title, properties, category }: FeaturedProp
       >
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
-            {title && <H2 className="text-2xl font-bold">{title}</H2>}
+            {title && <H2 className="text-2xl font-semibold">{title}</H2>}
             {category && <Star className={`w-6 h-6 mb-2.5 ${getCategoryColor(category)}`} />}
           </div>
           <div className="flex items-center gap-2">

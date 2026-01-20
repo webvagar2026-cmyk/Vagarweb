@@ -21,7 +21,7 @@ export function FaqSection({ faqs }: FaqSectionProps) {
                 <Accordion type="single" collapsible className="w-full rounded-xl">
                     {faqs.map((faq) => (
                         <AccordionItem key={faq.id} value={`item-${faq.id}`}>
-                            <AccordionTrigger className="text-left bg-gray-100 px-4 text-lg font-medium">
+                            <AccordionTrigger className="text-left bg-gray-50 px-4 text-lg font-medium">
                                 {faq.question}
                             </AccordionTrigger>
                             <AccordionContent className="px-4 text-muted-foreground pt-4 whitespace-pre-wrap">

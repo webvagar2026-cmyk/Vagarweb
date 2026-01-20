@@ -15,7 +15,7 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
   const imageUrl = testimonial.author_image_url || placeholderImage;
 
   return (
-    <Card className="h-full flex flex-col">
+    <Card className="h-full flex flex-col ml-[9px]">
       <CardHeader className="flex flex-row items-center gap-4 pb-2">
         <Image
           src={imageUrl}
@@ -30,18 +30,17 @@ export function TestimonialCard({ testimonial }: TestimonialCardProps) {
             {Array.from({ length: 5 }).map((_, index) => (
               <Star
                 key={index}
-                className={`w-4 h-4 ${
-                  index < testimonial.rating
-                    ? "fill-primary text-primary"
-                    : "fill-muted stroke-muted-foreground"
-                }`}
+                className={`w-4 h-4 ${index < testimonial.rating
+                  ? "fill-primary text-primary"
+                  : "fill-muted stroke-muted-foreground"
+                  }`}
               />
             ))}
           </div>
         </div>
       </CardHeader>
       <CardContent className="flex-grow">
-        <P className="text-muted-foreground italic">
+        <P className="text-muted-foreground">
           &ldquo;{testimonial.testimonial_text}&rdquo;
         </P>
       </CardContent>

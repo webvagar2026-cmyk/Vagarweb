@@ -44,7 +44,7 @@ export function FeaturedExperiences({
         className="w-full"
       >
         <div className="flex items-center justify-between mb-6">
-          <H2 className="text-2xl text-left md:text-3xl font-bold tracking-tight">
+          <H2 className="text-2xl text-left  font-semibold tracking-tight">
             {title}
           </H2>
           <div className="flex items-center gap-2">

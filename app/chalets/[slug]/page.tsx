@@ -121,13 +121,13 @@ export default async function ChaletDetailPage({ params }: ChaletDetailPageProps
                             <TooltipProvider>
                               <Tooltip>
                                 <TooltipTrigger asChild>
-                                  <span className="cursor-help decoration-gray-400 underline-offset-4">
+                                  <span className="cursor-pointer decoration-gray-400 underline-offset-4">
                                     {amenity.name}
                                   </span>
                                 </TooltipTrigger>
                                 {amenity.description && (
                                   <TooltipContent>
-                                    <p className="max-w-xs">{amenity.description}</p>
+                                    <p className="max-w-[220px]">{amenity.description}</p>
                                   </TooltipContent>
                                 )}
                               </Tooltip>

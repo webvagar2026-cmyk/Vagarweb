@@ -36,7 +36,7 @@ export function ComparisonTable({ mainChalet, comparisonChalet }: ComparisonTabl
     { name: 'Precio Temporada Alta', getValue: (chalet: Property) => chalet.price_high != null ? `$${chalet.price_high.toLocaleString('es-AR')}` : 'Consultar' },
     { name: 'Huéspedes', getValue: (chalet: Property) => chalet.guests ?? 'N/A' },
     { name: 'Dormitorios', getValue: (chalet: Property) => chalet.bedrooms ?? 'N/A' },
-    { name: 'Camas', getValue: (chalet: Property) => chalet.beds ?? 'N/A' },
+
   ];
 
   const amenityFeatures: AmenityFeature[] = allAmenities.map(amenity => ({

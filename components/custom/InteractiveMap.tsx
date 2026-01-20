@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import mapaImg from '@/assets/mapa.webp';
 import { Plus, Minus, RotateCcw } from 'lucide-react';
 import { TransformWrapper, TransformComponent, ReactZoomPanPinchRef } from 'react-zoom-pan-pinch';
@@ -23,6 +24,8 @@ const InteractiveMap = ({ properties, selectedNodeId }: InteractiveMapProps) => 
 
   // Ref to store the starting position of a click/drag
   const dragStartPos = useRef<{ x: number; y: number } | null>(null);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (selectedNodeId && transformComponentRef.current) {
@@ -47,7 +50,7 @@ const InteractiveMap = ({ properties, selectedNodeId }: InteractiveMapProps) => 
 
   const handlePropertyClick = (e: React.MouseEvent, property: Property) => {
     e.stopPropagation(); // Prevent map background click
-    setSelectedProperty(property);
+    router.push(`/chalets/${property.slug}`);
   };
 
   const handleCloseCard = () => {
@@ -115,6 +118,13 @@ const InteractiveMap = ({ properties, selectedNodeId }: InteractiveMapProps) => 
                 onMouseLeave={() => setHoveredPropertyId(null)}
               >
                 <polygon {...restPolygonAttribs} className={`${originalClassName || ''} ${dynamicClasses}`.trim()} />
+              </g>
+            );
+          } else {
+            const { class: originalClassName, ...restPolygonAttribs } = polygon.attribs;
+            return (
+              <g {...domNode.attribs} className="pointer-events-none opacity-0">
+                <polygon {...restPolygonAttribs} className={originalClassName} />
               </g>
             );
           }

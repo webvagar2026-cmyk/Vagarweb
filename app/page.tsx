@@ -59,7 +59,7 @@ export default async function Home() {
 
       {/* Section for Featured Experiences */}
       {featuredExperiences.length > 0 && (
-        <div className="pt-12 pb-0">
+        <div className="py-44">
           <FeaturedExperiences title="Experiencias Destacadas" experiences={featuredExperiences} />
         </div>
       )}

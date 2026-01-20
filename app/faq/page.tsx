@@ -11,7 +11,7 @@ export default async function FaqPage() {
     const faqs = await fetchFaqs();
 
     return (
-        <main className="min-h-screen bg-gray-50 pt-24 pb-12">
+        <main className="min-h-screen  pt-24 pb-12">
             <div className="container mx-auto px-4">
                 <h1 className="text-4xl font-bold text-gray-900 mb-8 text-center">Preguntas Frecuentes</h1>
                 <div className="max-w-3xl mx-auto">
@@ -23,7 +23,7 @@ export default async function FaqPage() {
                 {faqs.length > 0 ? (
                     <FaqSection faqs={faqs} />
                 ) : (
-                    <p className="text-center text-gray-500">No hay preguntas frecuentes disponibles en este momento.</p>
+                    <p className="text-center text-gray-300">No hay preguntas frecuentes disponibles en este momento.</p>
                 )}
             </div>
         </main>
