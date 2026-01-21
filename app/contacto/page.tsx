@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Phone, Mail, Loader2, CheckCircle2 } from 'lucide-react';
 import { FacebookIcon, InstagramIcon, YoutubeIcon, WhatsappIcon } from '@/components/social-icons';
 import { sendContactEmail } from '@/app/actions/contact';
+import { GoogleMapsEmbed } from '@/components/custom/GoogleMapsEmbed';
 import { useToast } from '@/components/ui/use-toast';
 import { useState, useTransition } from 'react';
 
@@ -140,12 +141,9 @@ export default function ContactPage() {
         </div>
       </div>
 
-      {/* Placeholder para el Mapa */}
-      <div className="mt-16 text-center bg-gray-100 p-16 rounded-lg">
-        <H4>Sección del Mapa</H4>
-        <P className="text-muted-foreground mt-2">
-          El mapa.
-        </P>
+      {/* Sección del Mapa */}
+      <div className="mt-16 h-[400px] w-full rounded-lg bg-gray-100 overflow-hidden">
+        <GoogleMapsEmbed latitude={-32.33792616024044} longitude={-64.98721490502872} />
       </div>
     </div>
   );
