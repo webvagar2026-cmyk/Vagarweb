@@ -1,6 +1,6 @@
 "use client";
 
-import { APIProvider, Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 
 interface GoogleMapsEmbedProps {
   latitude: number;
@@ -45,14 +45,11 @@ export function GoogleMapsEmbed({ latitude, longitude }: GoogleMapsEmbedProps) {
         <Map
           defaultCenter={position}
           defaultZoom={15}
-          mapId="DEMO_MAP_ID" // Required for AdvancedMarker, can be any string for basic usage or a real ID from Google Console
           styles={mapStyles}
           disableDefaultUI={false}
           gestureHandling={"cooperative"}
         >
-          <AdvancedMarker position={position}>
-            <Pin background={"#EA4335"} borderColor={"#B31412"} glyphColor={"#FFF"} />
-          </AdvancedMarker>
+          <Marker position={position} />
         </Map>
       </div>
     </APIProvider>
