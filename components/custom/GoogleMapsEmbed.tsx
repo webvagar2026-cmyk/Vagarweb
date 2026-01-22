@@ -44,7 +44,8 @@ export function GoogleMapsEmbed({ latitude, longitude }: GoogleMapsEmbedProps) {
       <div className="h-full w-full rounded-lg overflow-hidden">
         <Map
           defaultCenter={position}
-          defaultZoom={15}
+          defaultZoom={18}
+          mapTypeId="satellite"
           styles={mapStyles}
           disableDefaultUI={false}
           gestureHandling={"cooperative"}
