@@ -1,5 +1,7 @@
 "use client";
 
+import { APIProvider, Map, AdvancedMarker, Pin } from "@vis.gl/react-google-maps";
+
 interface GoogleMapsEmbedProps {
   latitude: number;
   longitude: number;
@@ -16,16 +18,43 @@ export function GoogleMapsEmbed({ latitude, longitude }: GoogleMapsEmbedProps) {
     );
   }
 
-  const mapSrc = `https://www.google.com/maps/embed/v1/place?key=${apiKey}&q=${latitude},${longitude}`;
+  const position = { lat: latitude, lng: longitude };
+
+  // Styles to hide Points of Interest (POIs)
+  const mapStyles = [
+    {
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "poi",
+      elementType: "geometry",
+      stylers: [{ visibility: "off" }],
+    },
+    // Opcional: Ocultar transporte público si se desea limpiar más
+    // {
+    //   featureType: "transit",
+    //   stylers: [{ visibility: "off" }],
+    // },
+  ];
 
   return (
-    <iframe
-      width="100%"
-      height="100%"
-      style={{ border: 0 }}
-      src={mapSrc}
-      allowFullScreen
-      className="rounded-lg"
-    ></iframe>
+    <APIProviderapiKey = { apiKey }>
+      < div className = "h-full w-full rounded-lg overflow-hidden" >
+    <Map
+      defaultCenter={position}
+      defaultZoom={15}
+      mapId="DEMO_MAP_ID" // Required for AdvancedMarker, can be any string for basic usage or a real ID from Google Console
+      styles={mapStyles}
+      disableDefaultUI={false}
+      gestureHandling={"cooperative"}
+    >
+      <AdvancedMarker position={position}>
+        <Pin background={"#EA4335"} borderColor={"#B31412"} glyphColor={"#FFF"} />
+      </AdvancedMarker>
+    </Map>
+      </div >
+    </APIProvider >
   );
 }
