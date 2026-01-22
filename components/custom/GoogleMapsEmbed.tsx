@@ -40,21 +40,21 @@ export function GoogleMapsEmbed({ latitude, longitude }: GoogleMapsEmbedProps) {
   ];
 
   return (
-    <APIProviderapiKey = { apiKey }>
-      < div className = "h-full w-full rounded-lg overflow-hidden" >
-    <Map
-      defaultCenter={position}
-      defaultZoom={15}
-      mapId="DEMO_MAP_ID" // Required for AdvancedMarker, can be any string for basic usage or a real ID from Google Console
-      styles={mapStyles}
-      disableDefaultUI={false}
-      gestureHandling={"cooperative"}
-    >
-      <AdvancedMarker position={position}>
-        <Pin background={"#EA4335"} borderColor={"#B31412"} glyphColor={"#FFF"} />
-      </AdvancedMarker>
-    </Map>
-      </div >
-    </APIProvider >
+    <APIProvider apiKey={apiKey}>
+      <div className="h-full w-full rounded-lg overflow-hidden">
+        <Map
+          defaultCenter={position}
+          defaultZoom={15}
+          mapId="DEMO_MAP_ID" // Required for AdvancedMarker, can be any string for basic usage or a real ID from Google Console
+          styles={mapStyles}
+          disableDefaultUI={false}
+          gestureHandling={"cooperative"}
+        >
+          <AdvancedMarker position={position}>
+            <Pin background={"#EA4335"} borderColor={"#B31412"} glyphColor={"#FFF"} />
+          </AdvancedMarker>
+        </Map>
+      </div>
+    </APIProvider>
   );
 }
