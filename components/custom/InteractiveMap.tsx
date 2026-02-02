@@ -92,7 +92,7 @@ const InteractiveMap = ({ properties, selectedNodeId }: InteractiveMapProps) => 
           const property = properties.find((p) => p.map_node_id === domNode.attribs.id);
 
           if (property) {
-            const { class: originalClassName, ...restPolygonAttribs } = polygon.attribs;
+            const { class: originalClassName, style, ...restPolygonAttribs } = polygon.attribs;
 
             let dynamicClasses = 'interactive-polygon';
             // Add category class if available
@@ -121,7 +121,7 @@ const InteractiveMap = ({ properties, selectedNodeId }: InteractiveMapProps) => 
               </g>
             );
           } else {
-            const { class: originalClassName, ...restPolygonAttribs } = polygon.attribs;
+            const { class: originalClassName, style, ...restPolygonAttribs } = polygon.attribs;
             return (
               <g {...domNode.attribs} className="pointer-events-none opacity-0">
                 <polygon {...restPolygonAttribs} className={originalClassName} />
