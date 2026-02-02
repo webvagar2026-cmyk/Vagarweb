@@ -94,7 +94,7 @@ export default function ContactPage() {
 
         {/* Columna Derecha: Formulario de Contacto */}
         <div>
-          <Card className="py-10 bg-gray-50 border-none shadow-md">
+          <Card className="py-10 bg-gray-50 mt-7 border-none shadow-md">
             <CardHeader>
               <CardTitle>Ponte en Contacto</CardTitle>
             </CardHeader>
