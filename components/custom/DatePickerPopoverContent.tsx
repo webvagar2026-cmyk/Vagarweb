@@ -4,6 +4,7 @@
 
 import * as React from "react";
 import { format, differenceInDays, parse } from "date-fns";
+import { es } from "date-fns/locale";
 import { DateRange } from "react-day-picker";
 import { X } from "lucide-react";
 
@@ -60,9 +61,10 @@ export const DatePickerPopoverContent: React.FC<DatePickerPopoverContentProps> =
           <H3>{nights > 0 ? `${nights} noches` : "Elegir fecha"}</H3>
           <Small className="text-muted-foreground">
             {date?.from && date?.to
-              ? `${format(date.from, "MMM d, yyyy")} - ${format(
+              ? `${format(date.from, "MMM d, yyyy", { locale: es })} - ${format(
                 date.to,
-                "MMM d, yyyy"
+                "MMM d, yyyy",
+                { locale: es }
               )}`
               : "2 días"}
           </Small>
@@ -104,6 +106,7 @@ export const DatePickerPopoverContent: React.FC<DatePickerPopoverContentProps> =
         onSelect={setDate}
         numberOfMonths={2}
         className="p-1"
+        locale={es}
       />
       <div className="flex justify-end items-center mt-4 space-x-2">
         <Button variant="link" onClick={() => setDate(undefined)}>
