@@ -149,7 +149,7 @@ export const ImageGallery = ({
           setIsModalOpen(open);
         }}
       >
-        <DialogContent className="flex flex-col max-h-[85vh] h-[85vh] w-full max-w-5xl bg-white p-6 overflow-hidden">
+        <DialogContent closeButtonPosition="left" className="flex flex-col max-h-[100vh] h-[100vh] w-[94vw]  bg-white px-6 pb-6 pt-14 overflow-hidden">
           <DialogTitle className="sr-only">Image Gallery</DialogTitle>
           <div className="flex-1 w-full pr-4 overflow-y-auto">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

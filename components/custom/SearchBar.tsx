@@ -5,7 +5,8 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { DateRange } from "react-day-picker";
 import { cn, formatDateToYYYYMMDD } from "@/lib/utils";
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -55,6 +56,12 @@ interface SearchBarProps {
 const SearchBar = ({ onSearch, initialFilters }: SearchBarProps) => {
   const [amenities, setAmenities] = React.useState<AmenityItem[]>([]);
   const [isLoadingAmenities, setIsLoadingAmenities] = React.useState(true);
+  const [isSearching, setIsSearching] = React.useState(false);
+  const searchParams = useSearchParams();
+
+  React.useEffect(() => {
+    setIsSearching(false);
+  }, [searchParams]);
 
   React.useEffect(() => {
     const fetchAmenities = async () => {
@@ -219,6 +226,7 @@ const SearchBar = ({ onSearch, initialFilters }: SearchBarProps) => {
   };
 
   const handleSearch = () => {
+    setIsSearching(true);
     const startDate = date?.from
       ? formatDateToYYYYMMDD(date.from)
       : undefined;
@@ -382,20 +390,24 @@ const SearchBar = ({ onSearch, initialFilters }: SearchBarProps) => {
               isButtonExpanded ? "w-26 h-12" : "w-12 h-12"
             )}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 ml-2 flex-shrink-0"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
+            {isSearching ? (
+              <Loader2 className="h-6 w-6 ml-2 flex-shrink-0 animate-spin" />
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 ml-2 flex-shrink-0"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            )}
             <span
               className={cn(
                 "whitespace-nowrap transition-all ease-in-out duration-300",

@@ -51,10 +51,12 @@ function DialogContent({
   children,
   showCloseButton = true,
   overlayClassName,
+  closeButtonPosition = "right",
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean,
-  overlayClassName?: string
+  overlayClassName?: string,
+  closeButtonPosition?: "left" | "right"
 }) {
   return (
     <DialogPortal data-slot="dialog-portal">
@@ -71,7 +73,10 @@ function DialogContent({
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            className="bg-white ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-6 right-6 rounded-sm opacity-80 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-5"
+            className={cn(
+              "bg-white ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute rounded-sm transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-7",
+              closeButtonPosition === "left" ? "top-4 left-3 right-auto" : "top-6 right-0"
+            )}
           >
             <ChevronLeft />
             <span className="sr-only">Close</span>
