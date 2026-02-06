@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import {
     LayoutDashboard,
     MessageSquare,
+    MessageCircleQuestionMark,
+    MessageSquareText,
     Calendar,
     Home,
     PlusCircle,
@@ -45,9 +47,9 @@ export function AdminSidebar({ initialCollapsed }: AdminSidebarProps) {
         { href: "/admin/chalets/new", label: "Cargar Chalet", icon: PlusCircle },
         { href: "/admin/experiencias", label: "Experiencias", icon: Star },
         { href: "/admin/amenities", label: "Amenities", icon: List },
-        { href: "/admin/faq", label: "Preguntas Frecuentes", icon: MessageSquare }, // Reusing MessageSquare or generic icon
+        { href: "/admin/faq", label: "Preguntas Frecuentes", icon: MessageCircleQuestionMark }, // Reusing MessageSquare or generic icon
         { href: "/admin/galeria", label: "Galería", icon: Image, hidden: true },
-        { href: "/admin/testimonials", label: "Testimonios", icon: MessageSquare },
+        { href: "/admin/testimonials", label: "Testimonios", icon: MessageSquareText },
     ];
 
     return (
