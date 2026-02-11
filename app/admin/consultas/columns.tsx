@@ -183,9 +183,9 @@ export const columns: ColumnDef<Booking>[] = [
     accessorKey: "dates",
     header: "Fechas",
     cell: ({ row }) => (
-      <span>
+      <div className="text-center">
         {new Date(row.original.check_in_date + 'T00:00:00').toLocaleDateString()} - {new Date(row.original.check_out_date + 'T00:00:00').toLocaleDateString()}
-      </span>
+      </div>
     ),
   },
   {
@@ -220,7 +220,11 @@ export const columns: ColumnDef<Booking>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => new Date(row.original.created_at).toLocaleDateString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' }),
+    cell: ({ row }) => (
+      <div className="text-center">
+        {new Date(row.original.created_at).toLocaleDateString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' })}
+      </div>
+    ),
   },
   {
     id: "actions",
