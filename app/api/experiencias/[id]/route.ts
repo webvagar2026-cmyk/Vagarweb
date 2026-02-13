@@ -46,7 +46,7 @@ export async function PUT(request: NextRequest, context: { params: Promise<{ id:
         category,
         short_description,
         long_description,
-        what_to_know: JSON.stringify(what_to_know),
+        what_to_know,
         featured,
       })
       .eq('id', id);

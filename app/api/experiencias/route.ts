@@ -31,8 +31,6 @@ export async function POST(request: Request) {
       images,
     } = parsedData;
 
-    const whatToKnowJson = JSON.stringify(what_to_know);
-
     // Insertar la experiencia en Supabase
     const { data: experienceData, error: experienceError } = await supabase
       .from('experiences')
@@ -42,7 +40,7 @@ export async function POST(request: Request) {
         category,
         short_description,
         long_description,
-        what_to_know: whatToKnowJson,
+        what_to_know,
         featured,
       })
       .select('id')
