@@ -64,7 +64,7 @@ export function BookingDialog({
 *Mi teléfono es:* ${phone}
             `.trim();
 
-            const whatsappUrl = `https://wa.me/5491132750873?text=${encodeURIComponent(
+            const whatsappUrl = `https://wa.me/5492656442389?text=${encodeURIComponent(
               message
             )}`;
             window.open(whatsappUrl, "_blank");
