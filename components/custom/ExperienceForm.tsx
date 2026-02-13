@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { useEffect } from "react";
 import { slugify } from "@/lib/utils";
@@ -36,7 +36,7 @@ const formSchema = z.object({
   category: z.string().min(1, "La categoría es obligatoria."),
   short_description: z.string().min(10, "La descripción corta debe tener al menos 10 caracteres."),
   long_description: z.string().min(20, "La descripción larga debe tener al menos 20 caracteres."),
-  what_to_know: z.string().optional(),
+  what_to_know: z.array(z.string()).optional(),
   featured: z.boolean(),
   images: z.array(z.object({ url: z.string().url("Debe ser una URL válida.") })),
 });
@@ -60,13 +60,17 @@ export function ExperienceForm({ defaultValues }: ExperienceFormProps) {
       category: "",
       short_description: "",
       long_description: "",
-      what_to_know: "",
+      what_to_know: [],
       featured: false,
       images: [],
     },
   });
 
-  const { watch, setValue } = form;
+  const { control, watch, setValue } = form; // Added control
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "what_to_know" as never, // safe cast as we know the structure
+  });
   const experienceTitle = watch("title");
 
   useEffect(() => {
@@ -223,15 +227,50 @@ export function ExperienceForm({ defaultValues }: ExperienceFormProps) {
           name="what_to_know"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Qué Deberías Saber (JSON)</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder='Ej: ["Punto 1", "Punto 2"]'
-                  className="resize-none"
-                  rows={4}
-                  {...field}
-                />
-              </FormControl>
+              <FormLabel>Qué Deberías Saber</FormLabel>
+              <div className="space-y-2">
+                {fields.map((field, index) => (
+                  <div key={field.id} className="flex gap-2">
+                    <FormControl>
+                      <Input
+                        placeholder={`Punto ${index + 1}`}
+                        {...form.register(`what_to_know.${index}` as const)}
+                      />
+                    </FormControl>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="icon"
+                      onClick={() => remove(index)}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="h-4 w-4"
+                      >
+                        <path d="M3 6h18" />
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                      </svg>
+                    </Button>
+                  </div>
+                ))}
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => append("")}
+                >
+                  Agregar Punto
+                </Button>
+              </div>
               <FormMessage />
             </FormItem>
           )}

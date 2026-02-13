@@ -10,7 +10,7 @@ const experienceSchema = z.object({
   category: z.string(),
   short_description: z.string(),
   long_description: z.string(),
-  what_to_know: z.string(), // Se espera un string JSON
+  what_to_know: z.array(z.string()), // Se espera un array de strings
   featured: z.boolean(),
   images: z.array(z.object({ url: z.string() })), // Se espera un array de objetos de imagen
 });
@@ -31,8 +31,7 @@ export async function POST(request: Request) {
       images,
     } = parsedData;
 
-    const whatToKnowArray = what_to_know.split('\n').filter(line => line.trim() !== '');
-    const whatToKnowJson = JSON.stringify(whatToKnowArray);
+    const whatToKnowJson = JSON.stringify(what_to_know);
 
     // Insertar la experiencia en Supabase
     const { data: experienceData, error: experienceError } = await supabase
