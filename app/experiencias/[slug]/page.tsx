@@ -72,7 +72,7 @@ export default async function ExperienciaDetailPage({
           <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
             {whatToKnowItems.map((item: string, index: number) => (
               <div key={index} className="flex items-start">
-                <span className="mr-2 mt-1 inline-block h-2 w-2 shrink-0 rounded-full bg-black" />
+                <span className="mr-2 mt-3.5 inline-block h-2 w-2 shrink-0 rounded-full bg-black" />
                 <P>{item}</P>
               </div>
             ))}
