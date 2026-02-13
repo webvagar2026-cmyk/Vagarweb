@@ -37,7 +37,7 @@ const Header = () => {
     { href: '/mapa', label: 'Mapa' },
     { href: '/experiencias', label: 'Experiencias' },
     { href: '/nosotros', label: 'Nosotros' },
-    { href: '/faq', label: 'FAQ' },
+    { href: '/faq', label: 'Preguntas Frecuentes' },
     { href: '/contacto', label: 'Contacto' },
   ];
 

@@ -43,7 +43,7 @@ const HomeAboutSection = () => {
                 transition={{ duration: 0.8, ease: "easeOut" }}
                 viewport={{ once: true }}
             >
-                <H2 className="text-white text-4xl leading-10 md:leading-2 pb-0">+25 años de trayectoria</H2>
+                <H2 className="text-white text-4xl leading-10 md:leading-2 pb-2">+25 años de trayectoria</H2>
                 <P className="text-white/90 mb-7 text-md">
                     acompañando experiencias auténticas
                 </P>
