@@ -84,15 +84,16 @@ const InteractiveMap = ({ properties, selectedNodeId }: InteractiveMapProps) => 
   const options: HTMLReactParserOptions = {
     replace: (domNode) => {
       if (domNode instanceof Element && domNode.name === 'g' && domNode.attribs.id) {
-        const polygon = domNode.children.find(
-          (child) => child instanceof Element && child.name === 'polygon'
+        const shape = domNode.children.find(
+          (child) => child instanceof Element && (child.name === 'polygon' || child.name === 'path')
         ) as Element | undefined;
 
-        if (polygon) {
+        if (shape) {
           const property = properties.find((p) => p.map_node_id === domNode.attribs.id);
 
           if (property) {
-            const { class: originalClassName, style, ...restPolygonAttribs } = polygon.attribs;
+            const { class: originalClassName, style: shapeStyle, ...restShapeAttribs } = shape.attribs;
+            const { style: groupStyle, ...restGroupAttribs } = domNode.attribs;
 
             let dynamicClasses = 'interactive-polygon';
             // Add category class if available
@@ -107,9 +108,11 @@ const InteractiveMap = ({ properties, selectedNodeId }: InteractiveMapProps) => 
               dynamicClasses += ' selected';
             }
 
+            const ShapeTag = shape.name as "polygon" | "path";
+
             return (
               <g
-                {...domNode.attribs}
+                {...restGroupAttribs}
                 onClick={(e) => handlePropertyClick(e, property)}
                 onMouseEnter={() => {
                   setHoveredPropertyId(property.id);
@@ -117,14 +120,16 @@ const InteractiveMap = ({ properties, selectedNodeId }: InteractiveMapProps) => 
                 }}
                 onMouseLeave={() => setHoveredPropertyId(null)}
               >
-                <polygon {...restPolygonAttribs} className={`${originalClassName || ''} ${dynamicClasses}`.trim()} />
+                <ShapeTag {...restShapeAttribs} className={`${originalClassName || ''} ${dynamicClasses}`.trim()} />
               </g>
             );
           } else {
-            const { class: originalClassName, style, ...restPolygonAttribs } = polygon.attribs;
+            const { class: originalClassName, style: shapeStyle, ...restShapeAttribs } = shape.attribs;
+            const { style: groupStyle, ...restGroupAttribs } = domNode.attribs;
+            const ShapeTag = shape.name as "polygon" | "path";
             return (
-              <g {...domNode.attribs} className="pointer-events-none opacity-0">
-                <polygon {...restPolygonAttribs} className={originalClassName} />
+              <g {...restGroupAttribs} className="pointer-events-none opacity-0">
+                <ShapeTag {...restShapeAttribs} className={originalClassName} />
               </g>
             );
           }
