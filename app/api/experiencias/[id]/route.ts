@@ -11,7 +11,7 @@ const formSchema = z.object({
   category: z.string().min(1, "La categoría es obligatoria."),
   short_description: z.string().min(10, "La descripción corta debe tener al menos 10 caracteres."),
   long_description: z.string().min(20, "La descripción larga debe tener al menos 20 caracteres."),
-  what_to_know: z.string(), // Se espera un string JSON
+  what_to_know: z.array(z.string()), // Se espera un array de strings
   featured: z.boolean(),
   images: z.array(z.object({ url: z.string().url("Debe ser una URL válida.") })),
 });

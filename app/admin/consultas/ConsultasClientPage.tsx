@@ -10,7 +10,7 @@ function ConsultasContent() {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const searchParams = useSearchParams();
 
   const fetchBookings = useCallback(async () => {
@@ -18,7 +18,7 @@ function ConsultasContent() {
     const params = new URLSearchParams(searchParams.toString());
     const response = await fetch(`/api/consultas?${params.toString()}`);
     const data = await response.json();
-    
+
     setBookings(data.bookings || []);
     setTotalPages(data.totalPages || 0);
     setIsLoading(false);
@@ -42,7 +42,7 @@ function ConsultasContent() {
 
 export default function ConsultasClientPage() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>Cargando...</div>}>
       <ConsultasContent />
     </Suspense>
   );

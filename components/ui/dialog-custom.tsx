@@ -75,7 +75,7 @@ function DialogContent({
             data-slot="dialog-close"
             className={cn(
               "bg-white ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute rounded-sm transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-7",
-              closeButtonPosition === "left" ? "top-4 left-3 right-auto" : "top-6 right-0"
+              closeButtonPosition === "left" ? "top-4 left-3 right-auto" : "top-6 right-4"
             )}
           >
             <ChevronLeft />

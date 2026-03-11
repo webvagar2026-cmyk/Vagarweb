@@ -64,7 +64,7 @@ export function BookingDialog({
 *Mi teléfono es:* ${phone}
             `.trim();
 
-            const whatsappUrl = `https://wa.me/5491132750873?text=${encodeURIComponent(
+            const whatsappUrl = `https://wa.me/5492656442389?text=${encodeURIComponent(
               message
             )}`;
             window.open(whatsappUrl, "_blank");
@@ -234,7 +234,7 @@ export function BookingDialog({
               className="animate-spin h-8 w-8 text-primary"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
-              viewBox="0 0 24 24"
+              viewBox="0 0 18 18"
             >
               <circle
                 className="opacity-25"
