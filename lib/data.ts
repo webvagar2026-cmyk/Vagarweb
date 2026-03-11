@@ -34,7 +34,8 @@ export const fetchProperties = async (searchParams?: {
   // Otherwise, fetch all properties with full details
   const { data: properties, error: propertiesError } = await supabase
     .from('properties')
-    .select('*');
+    .select('*')
+    .neq('is_paused', true);
 
   if (propertiesError) {
     console.error('Failed to fetch all properties:', propertiesError);
@@ -148,7 +149,7 @@ export const searchProperties = async (filters: {
   }
 
   // 2. Build the main query
-  let query = supabase.from('properties').select('*');
+  let query = supabase.from('properties').select('*').neq('is_paused', true);
 
   if (guests && !isNaN(parseInt(guests, 10)) && parseInt(guests, 10) > 0) {
     query = query.gte('guests', parseInt(guests, 10));
@@ -502,6 +503,7 @@ export const fetchFeaturedPropertiesByCategory = async (category: string, limit:
     .select('*')
     .eq('category', category)
     .eq('featured', true)
+    .neq('is_paused', true)
     .limit(limit);
 
   if (propertiesError) {
@@ -549,6 +551,7 @@ export const fetchFeaturedProperties = async (limit: number = 6): Promise<Proper
     .from('properties')
     .select('*')
     .eq('featured', true)
+    .neq('is_paused', true)
     .limit(limit);
 
   if (propertiesError) {

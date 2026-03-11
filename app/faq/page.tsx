@@ -7,6 +7,8 @@ export const metadata = {
     description: 'Encuentra respuestas a las dudas más comunes sobre tu estadía en nuestros chalets en Merlo, San Luis.',
 };
 
+export const revalidate = 0;
+
 export default async function FaqPage() {
     const faqs = await fetchFaqs();
 

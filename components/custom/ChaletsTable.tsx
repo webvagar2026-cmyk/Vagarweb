@@ -15,7 +15,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useToast } from '@/components/ui/use-toast';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2, Pause, Play } from 'lucide-react';
 
 interface ChaletsTableProps {
   initialChalets: Property[];
@@ -56,6 +56,40 @@ export default function ChaletsTable({ initialChalets }: ChaletsTableProps) {
     }
   };
 
+  const handlePauseToggle = async (id: number, currentStatus: boolean | undefined) => {
+    const newStatus = !currentStatus;
+    
+    try {
+      const response = await fetch(`/api/chalets/${id}/pause`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ is_paused: newStatus }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al actualizar el estado del chalet');
+      }
+
+      toast({
+        title: 'Éxito',
+        description: `Chalet ${newStatus ? 'pausado' : 'reanudado'} correctamente.`,
+      });
+
+      setChalets(chalets.map(chalet => 
+        chalet.id === id ? { ...chalet, is_paused: newStatus } : chalet
+      ));
+
+    } catch {
+      toast({
+        title: 'Error',
+        description: 'No se pudo actualizar el estado del chalet.',
+        variant: 'destructive',
+      });
+    }
+  };
+
   return (
     <div className="rounded-lg border shadow-sm">
       <Table>
@@ -65,6 +99,7 @@ export default function ChaletsTable({ initialChalets }: ChaletsTableProps) {
             <TableHead>Nombre</TableHead>
             <TableHead>Categoría</TableHead>
             <TableHead>Huéspedes</TableHead>
+            <TableHead>Estado</TableHead>
             <TableHead>Precio (Alta)</TableHead>
             <TableHead className="text-right">Acciones</TableHead>
           </TableRow>
@@ -86,8 +121,23 @@ export default function ChaletsTable({ initialChalets }: ChaletsTableProps) {
                 <Badge variant="outline">{chalet.category}</Badge>
               </TableCell>
               <TableCell>{chalet.guests}</TableCell>
+              <TableCell>
+                <Badge variant={chalet.is_paused ? "secondary" : "default"}>
+                  {chalet.is_paused ? "Pausado" : "Activo"}
+                </Badge>
+              </TableCell>
               <TableCell>${chalet.price_high}</TableCell>
               <TableCell className="text-right flex justify-end">
+                <Button 
+                  title={chalet.is_paused ? "Publicar" : "Pausar"}
+                  variant="outline" 
+                  size="icon" 
+                  className="mr-2"
+                  onClick={() => handlePauseToggle(chalet.id, chalet.is_paused)}
+                >
+                  {chalet.is_paused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
+                  <span className="sr-only">{chalet.is_paused ? "Publicar" : "Pausar"}</span>
+                </Button>
                 <Button asChild variant="outline" size="icon" className="mr-2">
                   <Link href={`/admin/chalets/${chalet.id}/edit`}>
                     <Pencil className="h-4 w-4" />
@@ -95,6 +145,7 @@ export default function ChaletsTable({ initialChalets }: ChaletsTableProps) {
                   </Link>
                 </Button>
                 <Button
+                  title="Eliminar"
                   variant="destructive"
                   size="icon"
                   onClick={() => handleDelete(chalet.id)}

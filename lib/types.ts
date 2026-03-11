@@ -32,6 +32,7 @@ export type Property = {
   price_mid: number | null;
   price_low: number | null;
   featured: boolean;
+  is_paused?: boolean;
   map_node_id: string;
   video_url?: string;
   optional_services?: string;
