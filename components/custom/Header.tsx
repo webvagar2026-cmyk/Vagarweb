@@ -83,16 +83,16 @@ const Header = () => {
               <SheetTitle className='hidden'>menú</SheetTitle>
               <nav className="flex flex-col mx-6 mt-14 flex-1 pb-8">
                 {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="text-lg text-gray-600 hover:text-gray-800 font-medium"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {link.label}
+                  <div key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-lg text-gray-600 hover:text-gray-800 font-medium"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
                     <Separator className="my-3" />
-
-                  </Link>
+                  </div>
                 ))}
                 <div className="mt-auto flex flex-col space-y-4 text-center md:text-left">
                   <ul className="space-y-2 text-sm text-gray-800">
