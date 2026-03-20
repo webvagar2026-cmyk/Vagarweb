@@ -1,11 +1,8 @@
 'use client';
 
-'use client';
-
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Property } from '@/lib/types';
 import { PropertyCard } from './PropertyCard';
-
 import { PropertyCardSkeleton } from './PropertyCardSkeleton';
 import { H2 } from '@/components/ui/typography';
 import {
@@ -21,19 +18,20 @@ interface ChaletGridProps {
   totalCount: number;
 }
 
+const SKELETON_COUNT = 12;
+
 const ChaletGrid = ({ initialProperties, totalCount }: ChaletGridProps) => {
-  const [properties, setProperties] = useState<Property[]>([]);
-  const [sortedProperties, setSortedProperties] = useState<Property[]>([]);
-  const [sortOrder, setSortOrder] = useState('rating-desc'); // Default sort
+  const [sortOrder, setSortOrder] = useState('rating-desc');
   const [isLoading, setIsLoading] = useState(true);
-  const [hasMore, setHasMore] = useState(true);
-  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const [properties, setProperties] = useState<Property[]>([]);
 
-  const itemsPerPage = 12;
-
-  // Effect to sort properties when sortOrder changes
+  // Ordena y muestra todas las propiedades. El skeleton solo aparece
+  // en el render inicial y cuando el usuario cambia el orden.
+  // No hay paginación falsa: toda la data ya está en memoria.
   useEffect(() => {
-    const newSortedProperties = [...initialProperties].sort((a, b) => {
+    setIsLoading(true);
+
+    const sorted = [...initialProperties].sort((a, b) => {
       switch (sortOrder) {
         case 'rating-desc':
           return (b.rating ?? 0) - (a.rating ?? 0);
@@ -47,59 +45,15 @@ const ChaletGrid = ({ initialProperties, totalCount }: ChaletGridProps) => {
           return 0;
       }
     });
-    setSortedProperties(newSortedProperties);
+
+    // Timeout breve para mostrar el skeleton al re-ordenar (UX feedback)
+    const timer = setTimeout(() => {
+      setProperties(sorted);
+      setIsLoading(false);
+    }, 400);
+
+    return () => clearTimeout(timer);
   }, [sortOrder, initialProperties]);
-
-  // Effect for initial load and when sorted properties are updated
-  useEffect(() => {
-    if (sortedProperties.length > 0) {
-      setIsLoading(true);
-      // Simulate loading to show skeleton when sorting changes
-      setTimeout(() => {
-        setProperties(sortedProperties.slice(0, itemsPerPage));
-        setIsLoading(false);
-        setHasMore(sortedProperties.length > itemsPerPage);
-      }, 500);
-    }
-  }, [sortedProperties]);
-
-  const fetchMoreData = useCallback(() => {
-    if (properties.length >= sortedProperties.length) {
-      setHasMore(false);
-      return;
-    }
-
-    // Simula una llamada a la API para cargar más propiedades
-    setTimeout(() => {
-      const newProperties = sortedProperties.slice(
-        properties.length,
-        properties.length + itemsPerPage
-      );
-      setProperties((prevProperties) => [...prevProperties, ...newProperties]);
-    }, 1000);
-  }, [properties.length, sortedProperties]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore && !isLoading) {
-          fetchMoreData();
-        }
-      },
-      { threshold: 1.0 }
-    );
-
-    const currentRef = loadMoreRef.current;
-    if (currentRef) {
-      observer.observe(currentRef);
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef);
-      }
-    };
-  }, [hasMore, isLoading, fetchMoreData]);
 
   return (
     <div>
@@ -117,35 +71,17 @@ const ChaletGrid = ({ initialProperties, totalCount }: ChaletGridProps) => {
           </SelectContent>
         </Select>
       </div>
-      {
-        isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 gap-y-5">
-            {Array.from({ length: itemsPerPage }).map((_, index) => (
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 gap-y-5">
+        {isLoading
+          ? Array.from({ length: SKELETON_COUNT }).map((_, index) => (
               <PropertyCardSkeleton key={index} />
             ))
-            }
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 gap-y-5">
-              {properties.map((property) => (
-                <PropertyCard key={property.id} property={property} />
-              ))}
-            </div>
-
-            <div ref={loadMoreRef} className="flex justify-center items-center py-8">
-              {hasMore && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full">
-                  {Array.from({ length: 4 }).map((_, index) => (
-                    <PropertyCardSkeleton key={index} />
-                  ))}
-                </div>
-              )}
-            </div>
-          </>
-        )
-      }
-    </div >
+          : properties.map((property) => (
+              <PropertyCard key={property.id} property={property} />
+            ))}
+      </div>
+    </div>
   );
 };
 
