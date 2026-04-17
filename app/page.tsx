@@ -1,7 +1,7 @@
 import HeroSection from "../components/custom/HeroSection";
 import { FeaturedProperties } from "../components/custom/FeaturedProperties";
 
-import { fetchFeaturedPropertiesByCategory, fetchFeaturedExperiences, fetchFeaturedTestimonials } from "@/lib/data";
+import { fetchPropertiesByCategory, fetchFeaturedExperiences, fetchFeaturedTestimonials } from "@/lib/data";
 
 import { FeaturedExperiences } from "@/components/custom/FeaturedExperiences";
 import { FeaturedTestimonials } from "@/components/custom/FeaturedTestimonials";
@@ -16,9 +16,9 @@ export default async function Home() {
     featuredExperiences,
     featuredTestimonials,
   ] = await Promise.all([
-    fetchFeaturedPropertiesByCategory('Verde', 6),
-    fetchFeaturedPropertiesByCategory('Azul', 6),
-    fetchFeaturedPropertiesByCategory('Celeste', 6),
+    fetchPropertiesByCategory('Verde'),
+    fetchPropertiesByCategory('Azul'),
+    fetchPropertiesByCategory('Celeste'),
     fetchFeaturedExperiences(4),
     fetchFeaturedTestimonials(),
   ]);

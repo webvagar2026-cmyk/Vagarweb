@@ -492,22 +492,19 @@ export const fetchChaletPageData = async (id: string): Promise<Property | undefi
 };
 
 /**
- * Fetches featured properties by category from the database.
+ * Fetches all active properties by category from the database.
  * @param category The category of the properties to return.
- * @param limit The maximum number of properties to return.
  */
-export const fetchFeaturedPropertiesByCategory = async (category: string, limit: number = 6): Promise<Property[]> => {
+export const fetchPropertiesByCategory = async (category: string): Promise<Property[]> => {
   // Step 1: Fetch the properties
   const { data: properties, error: propertiesError } = await supabase
     .from('properties')
     .select('*')
     .eq('category', category)
-    .eq('featured', true)
-    .neq('is_paused', true)
-    .limit(limit);
+    .neq('is_paused', true);
 
   if (propertiesError) {
-    console.error(`Failed to fetch featured properties for category ${category}:`, propertiesError);
+    console.error(`Failed to fetch properties for category ${category}:`, propertiesError);
     return [];
   }
   if (!properties || properties.length === 0) {
@@ -524,7 +521,7 @@ export const fetchFeaturedPropertiesByCategory = async (category: string, limit:
     .order('order', { ascending: true });
 
   if (imagesError) {
-    console.error('Failed to fetch images for featured properties:', imagesError);
+    console.error('Failed to fetch images for properties:', imagesError);
     // If images fail, we can still return properties without them
   }
 
