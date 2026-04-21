@@ -32,12 +32,11 @@ interface MobileSearchDialogProps {
     date: DateRange | undefined;
     setDate: (date: DateRange | undefined) => void;
     guests: {
-        adults: number;
-        children: number;
+        adultsAndChildren: number;
         infants: number;
     };
     handleGuestChange: (
-        type: "adults" | "children" | "infants",
+        type: "adultsAndChildren" | "infants",
         operation: "increment" | "decrement"
     ) => void;
     selectedAmenities: string[];
@@ -62,14 +61,14 @@ export function MobileSearchDialog({
     amenities,
     isLoadingAmenities,
 }: MobileSearchDialogProps) {
-    const totalGuests = guests.adults + guests.children;
+    const totalGuests = guests.adultsAndChildren;
     const guestsPart =
         totalGuests > 0
             ? `${totalGuests} huésped${totalGuests > 1 ? "es" : ""}`
             : "";
     const infantsPart =
         guests.infants > 0
-            ? `${guests.infants} Infante${guests.infants > 1 ? "s" : ""}`
+            ? `${guests.infants} bebé${guests.infants > 1 ? "s" : ""}`
             : "";
 
     const guestsText =

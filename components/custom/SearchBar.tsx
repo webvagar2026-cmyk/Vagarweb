@@ -138,14 +138,12 @@ const SearchBar = ({ onSearch, initialFilters }: SearchBarProps) => {
     const totalGuests = initialFilters?.guests || 0;
     if (totalGuests > 0) {
       return {
-        adults: totalGuests,
-        children: 0,
+        adultsAndChildren: totalGuests,
         infants: 0,
       };
     }
     return {
-      adults: 0,
-      children: 0,
+      adultsAndChildren: 0,
       infants: 0,
     };
   });
@@ -162,21 +160,21 @@ const SearchBar = ({ onSearch, initialFilters }: SearchBarProps) => {
       // Prevent negative numbers
       newGuests[type] = Math.max(0, newCount);
 
-      // If infants or children are added, ensure there's at least one adult.
+      // If infants are added, ensure there's at least one adult.
       if (
-        (type === "infants" || type === "children") &&
+        type === "infants" &&
         operation === "increment" &&
-        newGuests.adults === 0
+        newGuests.adultsAndChildren === 0
       ) {
-        newGuests.adults = 1;
+        newGuests.adultsAndChildren = 1;
       }
 
-      // Prevent decrementing adults to 0 if there are children or infants.
+      // Prevent decrementing adults to 0 if there are infants.
       if (
-        type === "adults" &&
+        type === "adultsAndChildren" &&
         operation === "decrement" &&
         newCount < 1 &&
-        (newGuests.children > 0 || newGuests.infants > 0)
+        newGuests.infants > 0
       ) {
         return prev; // Don't update state
       }
@@ -187,17 +185,17 @@ const SearchBar = ({ onSearch, initialFilters }: SearchBarProps) => {
 
   const handleClearGuests = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setGuests({ adults: 0, children: 0, infants: 0 });
+    setGuests({ adultsAndChildren: 0, infants: 0 });
   };
 
-  const totalGuests = guests.adults + guests.children;
+  const totalGuests = guests.adultsAndChildren;
   const guestsPart =
     totalGuests > 0
       ? `${totalGuests} huésped${totalGuests > 1 ? "es" : ""}`
       : "";
   const infantsPart =
     guests.infants > 0
-      ? `${guests.infants} Infante${guests.infants > 1 ? "s" : ""}`
+      ? `${guests.infants} bebé${guests.infants > 1 ? "s" : ""}`
       : "";
 
   const guestText =
@@ -245,7 +243,7 @@ const SearchBar = ({ onSearch, initialFilters }: SearchBarProps) => {
 
   const handleClearFilters = () => {
     setDate(undefined);
-    setGuests({ adults: 0, children: 0, infants: 0 });
+    setGuests({ adultsAndChildren: 0, infants: 0 });
     setSelectedAmenities([]);
   };
 

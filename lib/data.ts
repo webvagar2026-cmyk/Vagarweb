@@ -152,7 +152,16 @@ export const searchProperties = async (filters: {
   let query = supabase.from('properties').select('*').neq('is_paused', true);
 
   if (guests && !isNaN(parseInt(guests, 10)) && parseInt(guests, 10) > 0) {
-    query = query.gte('guests', parseInt(guests, 10));
+    const numGuests = parseInt(guests, 10);
+    const minGuests = numGuests >= 7 ? 7 : numGuests;
+    
+    query = query.gte('guests', minGuests);
+    
+    if (numGuests < 4) {
+      query = query.lte('guests', 5);
+    } else if (numGuests >= 4 && numGuests <= 6) {
+      query = query.lte('guests', numGuests + 2);
+    }
   }
 
   if (propertyIdsToFilter) {

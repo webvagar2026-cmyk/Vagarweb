@@ -3,9 +3,8 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 
-interface Guests {
-  adults: number;
-  children: number;
+export interface Guests {
+  adultsAndChildren: number;
   infants: number;
 }
 
@@ -15,71 +14,52 @@ interface GuestsPopoverContentProps {
     type: keyof Guests,
     operation: "increment" | "decrement"
   ) => void;
+  maxGuests?: number;
 }
 
 export const GuestsPopoverContent: React.FC<GuestsPopoverContentProps> = ({
   guests,
   handleGuestChange,
+  maxGuests = 16,
 }) => {
+  const adultsLimit = Math.min(16, maxGuests);
+  const infantsLimit = 16;
+
   return (
     <div className="grid gap-4 pl-6 pr-5 py-4 text-sm ">
       <div className="grid gap-2">
         <div className="flex items-center justify-between">
           <div>
-            <p className="font-semibold">Adultos</p>
-            <p className="text-xs text-gray-500">12 años o más</p>
+            <p className="font-semibold">Adultos y Niños</p>
+            <p className="text-xs text-gray-500">2 o más años</p>
           </div>
           <div className="flex items-center gap-4">
             <Button
               variant="outline"
               size="icon"
               className="rounded-full h-8 w-8"
-              onClick={() => handleGuestChange("adults", "decrement")}
-              disabled={guests.adults <= 1}
+              onClick={() => handleGuestChange("adultsAndChildren", "decrement")}
+              disabled={guests.adultsAndChildren <= 0}
             >
               -
             </Button>
-            <span>{guests.adults}</span>
+            <span>{guests.adultsAndChildren}</span>
             <Button
               variant="outline"
               size="icon"
               className="rounded-full h-8 w-8"
-              onClick={() => handleGuestChange("adults", "increment")}
+              onClick={() => handleGuestChange("adultsAndChildren", "increment")}
+              disabled={guests.adultsAndChildren >= adultsLimit}
             >
               +
             </Button>
           </div>
         </div>
-        <div className="flex items-center justify-between">
+
+        <div className="flex items-center justify-between mt-2">
           <div>
-            <p className="font-semibold">Niños</p>
-            <p className="text-xs text-gray-500">2 a 12 años</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button
-              variant="outline"
-              size="icon"
-              className="rounded-full h-8 w-8"
-              onClick={() => handleGuestChange("children", "decrement")}
-              disabled={guests.children <= 0}
-            >
-              -
-            </Button>
-            <span>{guests.children}</span>
-            <Button
-              variant="outline"
-              size="icon"
-              className="rounded-full h-8 w-8"
-              onClick={() => handleGuestChange("children", "increment")}
-            >
-              +
-            </Button>
-          </div>
-        </div>
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="font-semibold">Infantes</p>
-            <p className="text-xs text-gray-500">0 a 2 años</p>
+            <p className="font-semibold">Bebés</p>
+            <p className="text-xs text-gray-500">Menores de 2 años</p>
           </div>
           <div className="flex items-center gap-4">
             <Button
@@ -97,6 +77,7 @@ export const GuestsPopoverContent: React.FC<GuestsPopoverContentProps> = ({
               size="icon"
               className="rounded-full h-8 w-8"
               onClick={() => handleGuestChange("infants", "increment")}
+              disabled={guests.infants >= infantsLimit}
             >
               +
             </Button>

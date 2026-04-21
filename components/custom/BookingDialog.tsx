@@ -21,7 +21,7 @@ import { format } from "date-fns";
 interface BookingDialogProps {
   chalet: Property;
   selectedDates: DateRange | undefined;
-  guestCount: { adults: number; children: number; infants: number };
+  guestCount: { adultsAndChildren: number; infants: number };
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
@@ -58,8 +58,7 @@ export function BookingDialog({
             const message = `
 ¡Hola! Quisiera solicitar una reserva para el chalet *${chalet.name}*.
 *Fechas:* ${formattedDates}
-*Huéspedes:* ${guestCount.adults} Adultos, ${guestCount.children} Niños, ${guestCount.infants
-              } Infantes
+*Huéspedes:* ${guestCount.adultsAndChildren} ${guestCount.adultsAndChildren === 1 ? 'Adulto' : 'Adultos'}${guestCount.infants > 0 ? `, ${guestCount.infants} ${guestCount.infants === 1 ? 'Bebé' : 'Bebés'}` : ''}
 *Mi nombre es:* ${name}
 *Mi teléfono es:* ${phone}
             `.trim();
@@ -100,7 +99,7 @@ export function BookingDialog({
           property_id: chalet.id,
           check_in_date: selectedDates?.from,
           check_out_date: selectedDates?.to,
-          guests: guestCount.adults + guestCount.children,
+          guests: guestCount.adultsAndChildren,
           client_name: name,
           client_phone: phone,
         }),
@@ -178,8 +177,8 @@ export function BookingDialog({
               <div className="flex items-center justify-between">
                 <P className="font-semibold !mt-0">Personas:</P>
                 <P className="text-right !mt-0">
-                  {guestCount.adults} Adultos
-                  {guestCount.children > 0 && `, ${guestCount.children} Niños`}
+                  {guestCount.adultsAndChildren} Adultos y Niños
+                  {guestCount.infants > 0 && `, ${guestCount.infants} Bebés`}
                 </P>
               </div>
             </div>

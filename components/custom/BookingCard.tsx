@@ -30,8 +30,7 @@ export function BookingCard({ chalet, bookings }: BookingCardProps) {
   });
 
   const [guests, setGuests] = useState({
-    adults: 1,
-    children: 0,
+    adultsAndChildren: 1,
     infants: 0,
   });
 
@@ -40,9 +39,10 @@ export function BookingCard({ chalet, bookings }: BookingCardProps) {
     operation: "increment" | "decrement"
   ) => {
     setGuests((prev) => {
-      const totalGuests = prev.adults + prev.children;
+      const totalGuests = prev.adultsAndChildren;
       if (
         operation === "increment" &&
+        type === "adultsAndChildren" &&
         chalet.guests &&
         totalGuests >= chalet.guests
       ) {
@@ -51,7 +51,7 @@ export function BookingCard({ chalet, bookings }: BookingCardProps) {
 
       const newCount =
         operation === "increment" ? prev[type] + 1 : prev[type] - 1;
-      if (type === "adults" && newCount < 1) return prev;
+      if (type === "adultsAndChildren" && newCount < 1) return prev;
 
       return {
         ...prev,
@@ -98,11 +98,18 @@ export function BookingCard({ chalet, bookings }: BookingCardProps) {
     }
   };
 
-  const totalGuests = guests.adults + guests.children;
-  const guestText =
+  const totalGuests = guests.adultsAndChildren;
+  const guestsPart =
     totalGuests > 0
       ? `${totalGuests} huésped${totalGuests > 1 ? "es" : ""}`
       : "Seleccione huéspedes";
+  const infantsPart =
+    guests.infants > 0
+      ? `${guests.infants} bebé${guests.infants > 1 ? "s" : ""}`
+      : "";
+
+  const guestText =
+    [guestsPart, infantsPart].filter(Boolean).join(", ") || "Seleccione huéspedes";
 
   return (
     <div className="sticky top-6 rounded-xl border px-6 pt-6 pb-8 shadow-lg">
@@ -179,6 +186,7 @@ export function BookingCard({ chalet, bookings }: BookingCardProps) {
           <GuestsPopoverContent
             guests={guests}
             handleGuestChange={handleGuestChange}
+            maxGuests={chalet.guests || 16}
           />
         </PopoverContent>
       </Popover>
