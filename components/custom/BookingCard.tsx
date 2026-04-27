@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { addDays, format } from "date-fns";
+import { format } from "date-fns";
 import { DateRange } from "react-day-picker";
 import {
   Popover,
@@ -24,10 +24,7 @@ export function BookingCard({ chalet, bookings }: BookingCardProps) {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [isBookingDialogOpen, setIsBookingDialogOpen] = useState(false);
   const [warningMessage, setWarningMessage] = useState<string | null>(null);
-  const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: addDays(new Date(), 7),
-  });
+  const [date, setDate] = useState<DateRange | undefined>();
 
   const [guests, setGuests] = useState({
     adultsAndChildren: 1,
@@ -140,13 +137,13 @@ export function BookingCard({ chalet, bookings }: BookingCardProps) {
             <div className="p-2">
               <div className="text-[11px] lg:text-[13px] font-semibold uppercase">CHECK-IN</div>
               <div className="text-xs">
-                {date?.from ? format(date.from, "MM/dd/yyyy") : "Add date"}
+                {date?.from ? format(date.from, "dd/MM/yyyy") : "Agregar fecha"}
               </div>
             </div>
             <div className="border-l p-2">
               <div className="text-[11px] lg:text-[13px] font-semibold uppercase">CHECKOUT</div>
               <div className="text-xs">
-                {date?.to ? format(date.to, "MM/dd/yyyy") : "Add date"}
+                {date?.to ? format(date.to, "dd/MM/yyyy") : "Agregar fecha"}
               </div>
             </div>
           </div>
@@ -192,7 +189,7 @@ export function BookingCard({ chalet, bookings }: BookingCardProps) {
       </Popover>
 
       <Button className="w-full mt-4" onClick={handleReserveClick}>
-        Reservar
+        Consultar
       </Button>
 
       {warningMessage && (
