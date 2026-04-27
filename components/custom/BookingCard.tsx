@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { format } from "date-fns";
 import { DateRange } from "react-day-picker";
 import { useSearchParams } from "next/navigation";
@@ -35,7 +35,7 @@ const parseDateString = (dateString: string | null): Date | undefined => {
   return undefined;
 };
 
-export function BookingCard({ chalet, bookings }: BookingCardProps) {
+function BookingCardContent({ chalet, bookings }: BookingCardProps) {
   const searchParams = useSearchParams();
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [isBookingDialogOpen, setIsBookingDialogOpen] = useState(false);
@@ -236,5 +236,13 @@ export function BookingCard({ chalet, bookings }: BookingCardProps) {
         onOpenChange={setIsBookingDialogOpen}
       />
     </div>
+  );
+}
+
+export function BookingCard(props: BookingCardProps) {
+  return (
+    <Suspense fallback={<div className="sticky top-6 rounded-xl border px-6 pt-6 pb-8 shadow-lg min-h-[300px]">Cargando...</div>}>
+      <BookingCardContent {...props} />
+    </Suspense>
   );
 }

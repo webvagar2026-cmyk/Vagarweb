@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import SearchBar from './SearchBar';
 import { SearchBarSkeleton } from './SearchBarSkeleton';
@@ -89,7 +89,11 @@ const HeroSection = ({
 
         {/* SearchBar in the middle */}
         <div className="w-full flex justify-center pt-11.5">
-          {showSearchBar && (isLoading ? <SearchBarSkeleton /> : <SearchBar onSearch={handleSearch} />)}
+          {showSearchBar && (isLoading ? <SearchBarSkeleton /> : (
+            <Suspense fallback={<SearchBarSkeleton />}>
+              <SearchBar onSearch={handleSearch} />
+            </Suspense>
+          ))}
         </div>
 
         {/* Title at the bottom */}

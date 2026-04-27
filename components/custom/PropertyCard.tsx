@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Item, ItemContent, ItemMedia } from "../ui/item";
 import { Bath, BedDouble, CircleDollarSign, Star, Users } from "lucide-react";
@@ -10,13 +10,14 @@ import { Property } from "@/lib/types";
 import { H4, Muted, Small } from "@/components/ui/typography";
 
 import { getCategoryColor } from "@/lib/utils";
+import { PropertyCardSkeleton } from "./PropertyCardSkeleton";
 
 interface PropertyCardProps {
   property: Property;
   disableLink?: boolean;
 }
 
-export function PropertyCard({ property, disableLink = false }: PropertyCardProps) {
+function PropertyCardContent({ property, disableLink = false }: PropertyCardProps) {
   const [isPriceVisible, setIsPriceVisible] = useState(false);
   const searchParams = useSearchParams();
 
@@ -106,5 +107,13 @@ export function PropertyCard({ property, disableLink = false }: PropertyCardProp
     <Link href={href} className="flex flex-col h-full w-full">
       {CardContent}
     </Link>
+  );
+}
+
+export function PropertyCard(props: PropertyCardProps) {
+  return (
+    <Suspense fallback={<PropertyCardSkeleton />}>
+      <PropertyCardContent {...props} />
+    </Suspense>
   );
 }
