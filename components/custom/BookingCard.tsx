@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { format } from "date-fns";
 import { DateRange } from "react-day-picker";
+import { useSearchParams } from "next/navigation";
 import {
   Popover,
   PopoverContent,
@@ -20,15 +21,44 @@ interface BookingCardProps {
   bookings: Booking[];
 }
 
+const parseDateString = (dateString: string | null): Date | undefined => {
+  if (!dateString) return undefined;
+  const parts = dateString.split("-");
+  if (parts.length === 3) {
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10) - 1; // Month is 0-indexed
+    const day = parseInt(parts[2], 10);
+    if (!isNaN(year) && !isNaN(month) && !isNaN(day)) {
+      return new Date(year, month, day);
+    }
+  }
+  return undefined;
+};
+
 export function BookingCard({ chalet, bookings }: BookingCardProps) {
+  const searchParams = useSearchParams();
   const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
   const [isBookingDialogOpen, setIsBookingDialogOpen] = useState(false);
   const [warningMessage, setWarningMessage] = useState<string | null>(null);
-  const [date, setDate] = useState<DateRange | undefined>();
+  const [date, setDate] = useState<DateRange | undefined>(() => {
+    const startDate = searchParams.get("startDate");
+    const endDate = searchParams.get("endDate");
+    if (startDate) {
+      return {
+        from: parseDateString(startDate),
+        to: parseDateString(endDate),
+      };
+    }
+    return undefined;
+  });
 
-  const [guests, setGuests] = useState({
-    adultsAndChildren: 1,
-    infants: 0,
+  const [guests, setGuests] = useState(() => {
+    const guestsParam = searchParams.get("guests");
+    const totalGuests = guestsParam ? parseInt(guestsParam, 10) : 1;
+    return {
+      adultsAndChildren: isNaN(totalGuests) || totalGuests < 1 ? 1 : totalGuests,
+      infants: 0,
+    };
   });
 
   const handleGuestChange = (

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Item, ItemContent, ItemMedia } from "../ui/item";
 import { Bath, BedDouble, CircleDollarSign, Star, Users } from "lucide-react";
 import { Property } from "@/lib/types";
@@ -17,6 +18,7 @@ interface PropertyCardProps {
 
 export function PropertyCard({ property, disableLink = false }: PropertyCardProps) {
   const [isPriceVisible, setIsPriceVisible] = useState(false);
+  const searchParams = useSearchParams();
 
   const placeholderImage = "https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=2070&auto=format&fit=crop";
   const imageUrl = property.main_image_url || placeholderImage;
@@ -97,8 +99,11 @@ export function PropertyCard({ property, disableLink = false }: PropertyCardProp
     return <div className="flex flex-col h-full w-full">{CardContent}</div>;
   }
 
+  const queryString = searchParams.toString();
+  const href = `/chalets/${property.slug}${queryString ? `?${queryString}` : ""}`;
+
   return (
-    <Link href={`/chalets/${property.slug}`} className="flex flex-col h-full w-full">
+    <Link href={href} className="flex flex-col h-full w-full">
       {CardContent}
     </Link>
   );
