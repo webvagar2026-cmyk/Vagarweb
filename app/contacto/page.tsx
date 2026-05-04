@@ -143,7 +143,7 @@ export default function ContactPage() {
 
       {/* Sección del Mapa */}
       <div className="mt-16 h-[400px] w-full rounded-lg bg-gray-100 overflow-hidden">
-        <GoogleMapsEmbed latitude={-32.33792616024044} longitude={-64.98721490502872} />
+        <GoogleMapsEmbed latitude={-32.337074} longitude={-64.986402} />
       </div>
     </div>
   );

@@ -308,7 +308,7 @@ const SearchBar = ({ onSearch, initialFilters }: SearchBarProps) => {
         <div className="flex-1 relative ">
           <Popover onOpenChange={setIsDatePopoverOpen}>
             <PopoverTrigger asChild>
-              <button className="w-full text-left px-6 py-3 hover:bg-gray-100 rounded-none pr-10">
+              <button className="w-full text-left px-6 py-3 hover:bg-gray-100  rounded-none pr-10">
                 <p className="font-semibold text-xs text-gray-800">Cuándo</p>
                 <p className="text-xs pt-0.5 text-gray-500">
                   {date?.from ? (
