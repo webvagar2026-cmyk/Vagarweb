@@ -153,7 +153,9 @@ const InteractiveMap = ({ properties, selectedNodeId }: InteractiveMapProps) => 
                   centerX = x / f;
                   centerY = y / f;
                 }
-                showText = true;
+                if (domNode.attribs.id === property.map_node_ids?.[0]) {
+                  showText = true;
+                }
               }
             }
 
