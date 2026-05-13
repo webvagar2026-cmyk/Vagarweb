@@ -8,6 +8,17 @@ export const revalidate = 0;
 export const metadata: Metadata = {
   title: 'Experiencias',
   description: 'Experiencias únicas en las sierras de Merlo.',
+  openGraph: {
+    title: 'Experiencias | Vagar Vacaciones',
+    description: 'Experiencias únicas en las sierras de Merlo.',
+    images: [{ url: '/nosotros/Galeria_2/Nosotros_experiencia_01.webp', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Experiencias | Vagar Vacaciones',
+    description: 'Experiencias únicas en las sierras de Merlo.',
+    images: ['/nosotros/Galeria_2/Nosotros_experiencia_01.webp'],
+  },
 };
 
 export default async function ExperienciasPage() {

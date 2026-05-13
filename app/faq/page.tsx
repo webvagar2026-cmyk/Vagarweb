@@ -2,9 +2,22 @@
 import { FaqSection } from "@/components/custom/FaqSection";
 import { fetchFaqs } from "@/lib/data";
 
-export const metadata = {
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
     title: 'Preguntas Frecuentes',
     description: 'Encuentra respuestas a las dudas más comunes sobre tu estadía en nuestros chalets en Merlo, San Luis.',
+    openGraph: {
+      title: 'Preguntas Frecuentes | Vagar Vacaciones',
+      description: 'Encuentra respuestas a las dudas más comunes sobre tu estadía en nuestros chalets en Merlo, San Luis.',
+      images: [{ url: '/home-nosotros.webp', width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: 'Preguntas Frecuentes | Vagar Vacaciones',
+      description: 'Encuentra respuestas a las dudas más comunes sobre tu estadía en nuestros chalets en Merlo, San Luis.',
+      images: ['/home-nosotros.webp'],
+    },
 };
 
 export const revalidate = 0;

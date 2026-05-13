@@ -6,6 +6,17 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Nuestros Chalets',
   description: 'Explorá nuestro catálogo de chalets y encontrá tu hospedaje ideal.',
+  openGraph: {
+    title: 'Nuestros Chalets | Vagar Vacaciones',
+    description: 'Explorá nuestro catálogo de chalets y encontrá tu hospedaje ideal.',
+    images: [{ url: '/nosotros/Galeria_3/Chumamaya_04.webp', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Nuestros Chalets | Vagar Vacaciones',
+    description: 'Explorá nuestro catálogo de chalets y encontrá tu hospedaje ideal.',
+    images: ['/nosotros/Galeria_3/Chumamaya_04.webp'],
+  },
 };
 
 interface ChaletsPageProps {
