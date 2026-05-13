@@ -1,5 +1,6 @@
 import { fetchPropertyBySlug, fetchProperties, getChaletBookings } from "@/lib/data";
 import { getCategoryColor } from "@/lib/utils";
+import { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { notFound } from "next/navigation";
@@ -30,8 +31,43 @@ export async function generateStaticParams() {
 export const revalidate = 60;
 
 interface ChaletDetailPageProps {
-  params: {
+  params: Promise<{
     slug: string;
+  }>;
+}
+
+export async function generateMetadata(
+  { params }: ChaletDetailPageProps
+): Promise<Metadata> {
+  const { slug } = await params;
+  const chalet = await fetchPropertyBySlug(slug);
+
+  if (!chalet) {
+    return {
+      title: 'Chalet no encontrado',
+    };
+  }
+
+  const firstImage = chalet.gallery_images && chalet.gallery_images.length > 0
+    ? chalet.gallery_images[0]
+    : undefined;
+
+  const description = chalet.description ? chalet.description.substring(0, 160) : `Conocé ${chalet.name} en Vagar Vacaciones`;
+
+  return {
+    title: chalet.name,
+    description,
+    openGraph: {
+      title: chalet.name,
+      description,
+      images: firstImage ? [{ url: firstImage.url, width: 1200, height: 630 }] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: chalet.name,
+      description,
+      images: firstImage ? [firstImage.url] : [],
+    },
   };
 }
 

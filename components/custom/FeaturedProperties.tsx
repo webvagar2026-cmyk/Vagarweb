@@ -10,6 +10,8 @@ import { type Property } from "@/lib/types";
 import { H2 } from "@/components/ui/typography";
 import { Star } from "lucide-react";
 import { getCategoryColor } from "@/lib/utils";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 interface FeaturedPropertiesProps {
   title?: string;
@@ -36,9 +38,18 @@ export function FeaturedProperties({ title, properties, category }: FeaturedProp
             {title && <H2 className="text-2xl font-semibold">{title}</H2>}
             {category && <Star className={`w-6 h-6 mb-2.5 ${getCategoryColor(category)}`} />}
           </div>
-          <div className="flex items-center gap-2">
-            <CarouselPrevious className="static translate-y-0" />
-            <CarouselNext className="static translate-y-0" />
+          <div className="flex items-center gap-4">
+            {category && (
+              <Link href={`/chalets?categoria=${category.toLowerCase()}`}>
+                <Button variant="outline" size="sm" className="hidden sm:flex rounded-full px-4 font-medium text-sm">
+                  Ver todos
+                </Button>
+              </Link>
+            )}
+            <div className="flex items-center gap-2">
+              <CarouselPrevious className="static translate-y-0" />
+              <CarouselNext className="static translate-y-0" />
+            </div>
           </div>
         </div>
         <CarouselContent className="-ml-4">

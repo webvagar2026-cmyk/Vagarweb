@@ -40,6 +40,11 @@ const ChaletsClientPage = ({ initialProperties }: ChaletsClientPageProps) => {
   }) => {
     const params = new URLSearchParams();
 
+    const categoria = searchParams.get('categoria');
+    if (categoria) {
+      params.append('categoria', categoria);
+    }
+
     if (filters.guests > 0) {
       params.append('guests', filters.guests.toString());
     }

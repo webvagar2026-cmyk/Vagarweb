@@ -47,7 +47,7 @@ CREATE TABLE properties (
     featured BOOLEAN DEFAULT FALSE,
     video_url TEXT,
     optional_services TEXT,
-    map_node_id VARCHAR(255) UNIQUE
+    map_node_ids TEXT[] DEFAULT '{}'
 );
 
 -- Crear la tabla experiences
@@ -175,7 +175,7 @@ BEGIN
     FOR item IN SELECT * FROM json_array_elements(availability_data)
     LOOP
         -- Encontrar el property_id basado en el map_node_id
-        SELECT id INTO prop_id FROM properties WHERE map_node_id = item->>'map_node_id';
+        SELECT id INTO prop_id FROM properties WHERE item->>'map_node_id' = ANY(map_node_ids);
 
         -- Si se encuentra una propiedad, insertar la nueva reserva
         IF prop_id IS NOT NULL THEN
@@ -185,3 +185,31 @@ BEGIN
     END LOOP;
 END;
 $$ LANGUAGE plpgsql;
+
+-- Trigger para validar que los nodos de mapa sean únicos en todo el sistema
+CREATE OR REPLACE FUNCTION check_unique_map_nodes()
+RETURNS TRIGGER AS $$
+DECLARE
+    conflicting_node TEXT;
+BEGIN
+    IF NEW.map_node_ids IS NULL OR array_length(NEW.map_node_ids, 1) IS NULL THEN
+        RETURN NEW;
+    END IF;
+
+    SELECT unnest(NEW.map_node_ids) INTERSECT
+    SELECT unnest(map_node_ids) FROM properties WHERE id IS DISTINCT FROM NEW.id
+    INTO conflicting_node;
+
+    IF conflicting_node IS NOT NULL THEN
+        RAISE EXCEPTION 'El nodo de mapa % ya está asignado a otra propiedad.', conflicting_node;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_check_unique_map_nodes ON properties;
+CREATE TRIGGER trg_check_unique_map_nodes
+BEFORE INSERT OR UPDATE ON properties
+FOR EACH ROW
+EXECUTE FUNCTION check_unique_map_nodes();

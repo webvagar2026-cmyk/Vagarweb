@@ -29,7 +29,7 @@ const InteractiveMap = ({ properties, selectedNodeId }: InteractiveMapProps) => 
 
   useEffect(() => {
     if (selectedNodeId && transformComponentRef.current) {
-      const property = properties.find((p) => p.map_node_id === selectedNodeId);
+      const property = properties.find((p) => p.map_node_ids?.includes(selectedNodeId));
       if (property) {
         setSelectedProperty(property);
         // Usamos un selector de ID para encontrar el elemento en el DOM
@@ -89,7 +89,7 @@ const InteractiveMap = ({ properties, selectedNodeId }: InteractiveMapProps) => 
         ) as Element | undefined;
 
         if (shape) {
-          const property = properties.find((p) => p.map_node_id === domNode.attribs.id);
+          const property = properties.find((p) => p.map_node_ids?.includes(domNode.attribs.id));
 
           if (property) {
             const { class: originalClassName, style: shapeStyle, ...restShapeAttribs } = shape.attribs;
@@ -110,6 +110,53 @@ const InteractiveMap = ({ properties, selectedNodeId }: InteractiveMapProps) => 
 
             const ShapeTag = shape.name as "polygon" | "path";
 
+            let centerX = 0;
+            let centerY = 0;
+            let showText = false;
+
+            if (ShapeTag === 'polygon' && shape.attribs.points) {
+              const pointsStr = shape.attribs.points.trim();
+              const points = pointsStr.split(/[\s,]+/);
+
+              const parsedPoints: { x: number, y: number }[] = [];
+              for (let i = 0; i < points.length; i += 2) {
+                const x = Number(points[i]);
+                const y = Number(points[i + 1]);
+                if (!isNaN(x) && !isNaN(y)) {
+                  parsedPoints.push({ x, y });
+                }
+              }
+
+              if (parsedPoints.length > 0) {
+                let twiceArea = 0;
+                let x = 0;
+                let y = 0;
+                const nPts = parsedPoints.length;
+
+                // Algoritmo de "Centroide de Área" (Area Centroid / Center of Mass)
+                for (let i = 0, j = nPts - 1; i < nPts; j = i++) {
+                  const p1 = parsedPoints[i];
+                  const p2 = parsedPoints[j];
+                  const f = (p1.x * p2.y) - (p2.x * p1.y);
+                  twiceArea += f;
+                  x += (p1.x + p2.x) * f;
+                  y += (p1.y + p2.y) * f;
+                }
+
+                const f = twiceArea * 3;
+
+                if (f === 0 || isNaN(f)) {
+                  // Fallback: Promedio aritmético de los vértices si el área es 0 (línea)
+                  centerX = parsedPoints.reduce((acc, p) => acc + p.x, 0) / nPts;
+                  centerY = parsedPoints.reduce((acc, p) => acc + p.y, 0) / nPts;
+                } else {
+                  centerX = x / f;
+                  centerY = y / f;
+                }
+                showText = true;
+              }
+            }
+
             return (
               <g
                 {...restGroupAttribs}
@@ -121,6 +168,31 @@ const InteractiveMap = ({ properties, selectedNodeId }: InteractiveMapProps) => 
                 onMouseLeave={() => setHoveredPropertyId(null)}
               >
                 <ShapeTag {...restShapeAttribs} className={`${originalClassName || ''} ${dynamicClasses}`.trim()} />
+                {showText && (
+                  <text
+                    x={centerX}
+                    y={centerY}
+                    transform={shape.attribs.transform}
+                    textAnchor="middle"
+                    dominantBaseline="central"
+                    className="pointer-events-none fill-white font-bold"
+                    style={{
+                      fontSize: '200px',
+                      textShadow: '0px 0px 100px rgba(0,0,0,0.8), 0px 200px 400px rgba(0,0,0,0.6)',
+                      userSelect: 'none'
+                    }}
+                  >
+                    {property.name.toUpperCase().split(' ').map((word, index, arr) => (
+                      <tspan
+                        key={index}
+                        x={centerX}
+                        dy={index === 0 ? `-${(arr.length - 1) * 0.5}em` : '1em'}
+                      >
+                        {word}
+                      </tspan>
+                    ))}
+                  </text>
+                )}
               </g>
             );
           } else {

@@ -61,7 +61,7 @@ const formSchema = z.object({
   price_high: numericString.refine(val => val === null || (val > 0 && val < 100000000), { message: "El precio debe ser positivo y menor a 100,000,000" }),
   price_mid: numericString.refine(val => val === null || (val > 0 && val < 100000000), { message: "El precio debe ser positivo y menor a 100,000,000" }),
   price_low: numericString.refine(val => val === null || (val > 0 && val < 100000000), { message: "El precio debe ser positivo y menor a 100,000,000" }),
-  map_node_id: z.string().optional(),
+  map_node_ids: z.array(z.string()).optional(),
   video_url: z.string().url({ message: "Por favor, introduce una URL válida." }).or(z.literal("")).optional(),
   featured: z.boolean().default(false),
   gallery_images: z.array(z.string().url({ message: "Por favor, introduce una URL válida." })).optional(),
@@ -88,7 +88,7 @@ export function ChaletForm({ defaultValues, usedMapNodeIds = [], allAmenities }:
 
   // Filter out used map node IDs, but always include the current one in edit mode
   const availableMapNodeIds = mapNodeIds.filter(
-    (id) => !usedMapNodeIds.includes(id) || id === defaultValues?.map_node_id
+    (id) => !usedMapNodeIds.includes(id) || defaultValues?.map_node_ids?.includes(id)
   );
 
   const getInitialValues = (): ChaletFormValues => {
@@ -108,7 +108,7 @@ export function ChaletForm({ defaultValues, usedMapNodeIds = [], allAmenities }:
       price_high: null,
       price_mid: null,
       price_low: null,
-      map_node_id: "",
+      map_node_ids: [],
       video_url: "",
       featured: false,
       gallery_images: [],
@@ -139,7 +139,7 @@ export function ChaletForm({ defaultValues, usedMapNodeIds = [], allAmenities }:
       price_high: defaultValues.price_high ?? null,
       price_mid: defaultValues.price_mid ?? null,
       price_low: defaultValues.price_low ?? null,
-      map_node_id: defaultValues.map_node_id || "",
+      map_node_ids: defaultValues.map_node_ids || [],
       video_url: defaultValues.video_url || "",
       featured: defaultValues.featured || false,
       gallery_images: defaultValues.gallery_images?.map((img) => img.url) || [],
@@ -491,26 +491,46 @@ export function ChaletForm({ defaultValues, usedMapNodeIds = [], allAmenities }:
 
         <FormField
           control={form.control}
-          name="map_node_id"
+          name="map_node_ids"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>ID del Nodo del Mapa</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormLabel>IDs del Nodo del Mapa</FormLabel>
+              <Select
+                onValueChange={(value) => {
+                  if (value && !field.value?.includes(value)) {
+                    field.onChange([...(field.value || []), value]);
+                  }
+                }}
+              >
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Seleccione un ID de nodo" />
+                    <SelectValue placeholder="Seleccione un ID de nodo para agregar" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {availableMapNodeIds.map(nodeId => (
+                  {availableMapNodeIds.filter(id => !field.value?.includes(id)).map(nodeId => (
                     <SelectItem key={nodeId} value={nodeId}>
                       {nodeId}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
+              <div className="flex flex-wrap gap-2 mt-2">
+                {field.value?.map(nodeId => (
+                  <div key={nodeId} className="flex items-center gap-1 bg-secondary text-secondary-foreground px-3 py-1 rounded-full text-sm">
+                    <span>{nodeId}</span>
+                    <button
+                      type="button"
+                      className="ml-1 text-muted-foreground hover:text-foreground"
+                      onClick={() => field.onChange(field.value?.filter(id => id !== nodeId))}
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+              </div>
               <FormDescription>
-                El ID único del polígono en el SVG del mapa interactivo.
+                Puedes asignar múltiples IDs del mapa SVG a una misma propiedad.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -686,14 +706,14 @@ export function ChaletForm({ defaultValues, usedMapNodeIds = [], allAmenities }:
           control={form.control}
           name="featured"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+            <FormItem className="flex flex-row hidden items-start space-x-3 space-y-0 rounded-md border p-4">
               <FormControl>
                 <Checkbox
                   checked={field.value}
                   onCheckedChange={field.onChange}
                 />
               </FormControl>
-              <div className="space-y-1 leading-none">
+              <div className="space-y-1 leading-none ">
                 <FormLabel>
                   Propiedad Destacada
                 </FormLabel>
@@ -705,7 +725,7 @@ export function ChaletForm({ defaultValues, usedMapNodeIds = [], allAmenities }:
           )}
         />
 
-        <Button type="submit" disabled={isSubmitting}>
+        <Button className="mt-10" type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Guardando..." : (isEditMode ? "Actualizar Chalet" : "Guardar Chalet")}
         </Button>
       </form>

@@ -49,7 +49,7 @@ const formSchema = z.object({
     (val) => (val === "" || val === null || val === undefined ? undefined : Number(val)),
     z.number().positive().optional()
   ),
-  map_node_id: z.string().optional(),
+  map_node_ids: z.array(z.string()).optional(),
   video_url: z.string().url({ message: "Por favor, introduce una URL válida." }).optional().or(z.literal('')),
   featured: z.boolean().default(false),
   gallery_images: z.array(z.string().url({ message: "Por favor, introduce una URL válida." })).optional(),

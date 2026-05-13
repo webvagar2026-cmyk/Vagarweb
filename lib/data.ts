@@ -19,15 +19,17 @@ export const fetchProperties = async (searchParams?: {
   endDate?: string;
   guests?: string;
   amenities?: string;
+  category?: string;
 }): Promise<Property[]> => {
   // If there are search params, delegate to the search function
-  if (searchParams && (searchParams.startDate || searchParams.endDate || searchParams.guests || searchParams.amenities)) {
+  if (searchParams && (searchParams.startDate || searchParams.endDate || searchParams.guests || searchParams.amenities || searchParams.category)) {
     const amenitiesArray = searchParams.amenities ? searchParams.amenities.split(',') : null;
     return searchProperties({
       startDate: searchParams.startDate,
       endDate: searchParams.endDate,
       guests: searchParams.guests,
       amenities: amenitiesArray,
+      category: searchParams.category,
     });
   }
 
@@ -89,8 +91,9 @@ export const searchProperties = async (filters: {
   startDate?: string | null;
   endDate?: string | null;
   name?: string | null;
+  category?: string | null;
 }): Promise<Property[]> => {
-  const { guests, amenities, startDate, endDate, name } = filters;
+  const { guests, amenities, startDate, endDate, name, category } = filters;
 
   let propertyIdsToFilter: number[] | null = null;
 
@@ -166,6 +169,10 @@ export const searchProperties = async (filters: {
 
   if (propertyIdsToFilter) {
     query = query.in('id', propertyIdsToFilter);
+  }
+
+  if (category) {
+    query = query.ilike('category', category);
   }
 
   // Date-based availability search
@@ -510,7 +517,8 @@ export const fetchPropertiesByCategory = async (category: string): Promise<Prope
     .from('properties')
     .select('*')
     .eq('category', category)
-    .neq('is_paused', true);
+    .neq('is_paused', true)
+    .order('rating', { ascending: false, nullsFirst: false });
 
   if (propertiesError) {
     console.error(`Failed to fetch properties for category ${category}:`, propertiesError);
@@ -944,14 +952,15 @@ export const fetchFilteredChalets = async (filters: {
 export const fetchUsedMapNodeIds = async (): Promise<string[]> => {
   const { data, error } = await supabase
     .from('properties')
-    .select('map_node_id')
-    .not('map_node_id', 'is', null);
+    .select('map_node_ids');
 
   if (error) {
     console.error('Failed to fetch used map node IDs:', error);
     return [];
   }
-  return data.map((row: { map_node_id: string }) => row.map_node_id);
+  
+  const allIds = data.flatMap((row: { map_node_ids: string[] | null }) => row.map_node_ids || []);
+  return Array.from(new Set(allIds));
 };
 
 /**

@@ -6,6 +6,11 @@ import { fetchPropertiesByCategory, fetchFeaturedExperiences, fetchFeaturedTesti
 import { FeaturedExperiences } from "@/components/custom/FeaturedExperiences";
 import { FeaturedTestimonials } from "@/components/custom/FeaturedTestimonials";
 import HomeAboutSection from "@/components/custom/HomeAboutSection";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Inicio",
+};
 
 export default async function Home() {
   // Fetch featured properties and experiences in parallel

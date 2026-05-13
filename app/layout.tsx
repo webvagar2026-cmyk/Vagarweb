@@ -9,8 +9,34 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Vagar Vacaciones",
-  description: "Alquileres en Merlo, San Luis",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"),
+  title: {
+    default: "Vagar Vacaciones",
+    template: "%s | Vagar Vacaciones",
+  },
+  description: "Alquileres en Merlo, San Luis. Descubrí chalets exclusivos en Chumamaya Country Club.",
+  openGraph: {
+    type: "website",
+    locale: "es_AR",
+    url: "/",
+    siteName: "Vagar Vacaciones",
+    title: "Vagar Vacaciones",
+    description: "Alquileres en Merlo, San Luis. Descubrí chalets exclusivos en Chumamaya Country Club.",
+    images: [
+      {
+        url: "/home-nosotros.webp",
+        width: 1200,
+        height: 630,
+        alt: "Vagar Vacaciones",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Vagar Vacaciones",
+    description: "Alquileres en Merlo, San Luis. Descubrí chalets exclusivos en Chumamaya Country Club.",
+    images: ["/home-nosotros.webp"],
+  },
 };
 
 export default function RootLayout({

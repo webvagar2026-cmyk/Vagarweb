@@ -3,7 +3,7 @@ import { FaqSection } from "@/components/custom/FaqSection";
 import { fetchFaqs } from "@/lib/data";
 
 export const metadata = {
-    title: 'Preguntas Frecuentes | Vagar',
+    title: 'Preguntas Frecuentes',
     description: 'Encuentra respuestas a las dudas más comunes sobre tu estadía en nuestros chalets en Merlo, San Luis.',
 };
 

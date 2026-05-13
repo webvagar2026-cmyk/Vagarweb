@@ -61,7 +61,7 @@ export function MapSearchBar({ onSearchResultSelect }: MapSearchBarProps) {
             <li
               key={property.id}
               className="px-4 py-2 cursor-pointer text-sm hover:font-medium"
-              onClick={() => handleSelect(property.map_node_id)}
+              onClick={() => handleSelect(property.map_node_ids?.[0] || '')}
             >
               {property.name}
             </li>
